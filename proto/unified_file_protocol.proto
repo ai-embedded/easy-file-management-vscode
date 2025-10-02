@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package unified_file_protocol;
+
+// 统一请求消息
+message UnifiedRequest {
+  enum Operation {
+    UNKNOWN = 0;
+    PING = 1;
+    PONG = 2;
+    CONNECT = 3;
+    DISCONNECT = 4;
+    LIST_FILES = 16;
+    FILE_INFO = 17;
+    CREATE_DIR = 18;
+    DELETE_FILE = 19;
+    RENAME_FILE = 20;
+    UPLOAD_FILE = 32;
+    DOWNLOAD_FILE = 33;
+    UPLOAD_REQ = 48;
+    UPLOAD_DATA = 49;
+    UPLOAD_END = 50;
+    DOWNLOAD_REQ = 51;
+    DOWNLOAD_DATA = 52;
+    DOWNLOAD_END = 53;
+  }
+  
+  Operation operation = 1;          // 操作类型
+  string path = 2;                 // 文件/目录路径
+  string name = 3;                 // 文件/目录名称
+  bytes data = 4;                  // 文件数据
+  string new_name = 5;             // 新文件名（重命名用）
+  map<string, string> options = 6; // 扩展选项
+  
+  // 分块传输支持
+  bool is_chunk = 7;               // 是否为分块数据
+  int32 chunk_index = 8;           // 当前块索引
+  int32 total_chunks = 9;          // 总块数
+  string chunk_hash = 10;          // 块数据校验值
+  
+  // 连接信息
+  string client_id = 11;           // 客户端标识
+  string version = 12;             // 协议版本
+  repeated string supported_formats = 13; // 支持的数据格式
+  
+  // 文件上传相关
+  string filename = 14;            // 文件名
+  int64 file_size = 15;            // 文件大小
+  string checksum = 16;            // 文件校验和
+  int32 chunk_size = 17;           // 分块大小
+  string preferred_format = 18;    // 客户端首选数据格式（json|protobuf）
+}
+
+// 统一响应消息
+message UnifiedResponse {
+  bool success = 1;                // 操作是否成功
+  string message = 2;              // 响应消息
+  repeated FileInfo files = 3;     // 文件列表
+  bytes data = 4;                  // 文件数据
+  
+  // 分块传输支持
+  bool is_chunk = 5;               // 是否为分块数据
+  int32 chunk_index = 6;           // 当前块索引
+  int32 total_chunks = 7;          // 总块数
+  string chunk_hash = 8;           // 块数据校验值
+  
+  // 性能统计
+  int64 process_time_ms = 9;       // 处理耗时（毫秒）
+  int64 file_size = 10;            // 文件大小
+  
+  // 进度信息
+  int32 progress_percent = 11;     // 进度百分比
+  string status = 12;              // 状态描述
+  
+  // 协议协商信息
+  string selected_format = 13;     // 选定的数据格式
+  repeated string supported_commands = 14; // 支持的命令列表
+  
+  // 服务器信息
+  ServerInfo server_info = 15;     // 服务器信息
+  
+  // 时间戳
+  int64 timestamp = 16;            // 时间戳
+  
+  // 会话信息
+  string session_id = 17;          // 会话ID（用于分块传输）
+  int32 accepted_chunk_size = 18;  // 接受的分块大小
+}
+
+// 文件信息
+message FileInfo {
+  string name = 1;                 // 文件名
+  string path = 2;                 // 完整路径
+  string type = 3;                 // "file" | "directory"
+  int64 size = 4;                  // 文件大小（字节）
+  string last_modified = 5;        // 最后修改时间 (ISO 8601)
+  string permissions = 6;          // 权限字符串
+  bool is_readonly = 7;            // 是否只读
+  string mime_type = 8;            // MIME 类型
+}
+
+// 服务器信息
+message ServerInfo {
+  string name = 1;                 // 服务器名称
+  string version = 2;              // 服务器版本
+  string protocol = 3;             // 协议类型
+  repeated string supported_formats = 4; // 支持的数据格式
+  string root_dir = 5;             // 根目录
+  int64 max_file_size = 6;         // 最大文件大小
+  int32 chunk_size = 7;            // 推荐分块大小
+  int32 concurrent_operations = 8; // 并发操作数
+}

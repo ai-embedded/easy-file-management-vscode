@@ -1,0 +1,58 @@
+// VSCode工作区设置 - 优化SSH远程开发体验
+{
+	"files.exclude": {
+		"out": false,
+		"dist": false,
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"**/Thumbs.db": true,
+		"**/node_modules": false
+	},
+	"search.exclude": {
+		"out": true,
+		"dist": true,
+		"**/node_modules": true,
+		"**/*.vsix": true
+	},
+	"files.watcherExclude": {
+		"**/node_modules/**": true,
+		"**/dist/**": true,
+		"**/.git/**": true
+	},
+	// TypeScript配置
+	"typescript.tsc.autoDetect": "off",
+	"typescript.preferences.includePackageJsonAutoImports": "on",
+	"typescript.suggest.autoImports": true,
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	// 编辑器配置
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit"
+	},
+	"editor.formatOnSave": true,
+	"editor.tabSize": 4,
+	"editor.insertSpaces": false,
+	// 调试配置
+	"debug.console.fontSize": 14,
+	"debug.console.wordWrap": true,
+	"debug.allowBreakpointsEverywhere": true,
+	"debug.openDebug": "openOnDebugBreak",
+	// 终端配置
+	"terminal.integrated.defaultProfile.linux": "zsh",
+	"terminal.integrated.copyOnSelection": true,
+	// 扩展开发相关
+	"extensions.autoUpdate": false,
+	"extensions.ignoreRecommendations": false,
+	// 文件关联
+	"files.associations": {
+		"*.vsix": "zip"
+	},
+	// 工作台配置
+	"workbench.editor.enablePreview": false,
+	"workbench.editor.enablePreviewFromQuickOpen": false,
+	// 自动保存
+	"files.autoSave": "afterDelay",
+	"files.autoSaveDelay": 1000
+}

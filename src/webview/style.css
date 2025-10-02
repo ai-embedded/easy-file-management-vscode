@@ -1,0 +1,224 @@
+/* Global styling for VSCode-integrated webview */
+
+/* Establish VS Code aware CSS variables for Element Plus */
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+    font-size: var(--vscode-font-size, 13px);
+    background-color: var(--el-bg-color-page);
+    color: var(--el-text-color-primary);
+
+    /* Element Plus token overrides wired to VS Code theme variables */
+    --el-bg-color: var(--vscode-editor-background);
+    --el-bg-color-page: var(--vscode-editor-background);
+    --el-bg-color-overlay: var(--vscode-dropdown-background);
+    --el-bg-color-secondary: var(--vscode-editorPane-background, var(--vscode-editor-background));
+    --el-text-color-primary: var(--vscode-editor-foreground);
+    --el-text-color-regular: var(--vscode-foreground);
+    --el-text-color-secondary: var(--vscode-descriptionForeground);
+    --el-text-color-placeholder: var(--vscode-descriptionForeground);
+    --el-text-color-disabled: var(--vscode-disabledForeground);
+    --el-border-color: var(--vscode-panel-border);
+    --el-border-color-dark: var(--vscode-panel-border);
+    --el-border-color-darker: var(--vscode-panel-border);
+    --el-border-color-light: color-mix(in srgb, var(--vscode-panel-border) 70%, transparent);
+    --el-border-color-lighter: color-mix(in srgb, var(--vscode-panel-border) 40%, transparent);
+    --el-border-color-extra-light: color-mix(in srgb, var(--vscode-panel-border) 20%, transparent);
+    --el-fill-color: color-mix(in srgb, var(--vscode-editor-background) 92%, #000 8%);
+    --el-fill-color-light: color-mix(in srgb, var(--vscode-editor-background) 95%, #000 5%);
+    --el-fill-color-lighter: color-mix(in srgb, var(--vscode-editor-background) 97%, #000 3%);
+    --el-fill-color-extra-light: color-mix(in srgb, var(--vscode-editor-background) 98%, #000 2%);
+    --el-fill-color-dark: color-mix(in srgb, var(--vscode-editor-background) 85%, #000 15%);
+    --el-fill-color-darker: color-mix(in srgb, var(--vscode-editor-background) 75%, #000 25%);
+    --el-fill-color-blank: var(--vscode-editor-background);
+    --el-mask-color: rgba(0, 0, 0, 0.45);
+    --el-mask-color-extra-light: rgba(0, 0, 0, 0.25);
+    --el-color-primary: var(--vscode-button-background);
+    --el-color-primary-light-3: color-mix(in srgb, var(--vscode-button-background) 70%, var(--vscode-editor-background));
+    --el-color-primary-light-5: color-mix(in srgb, var(--vscode-button-background) 50%, var(--vscode-editor-background));
+    --el-color-primary-light-7: color-mix(in srgb, var(--vscode-button-background) 30%, var(--vscode-editor-background));
+    --el-color-primary-dark-2: color-mix(in srgb, var(--vscode-button-background) 80%, #000);
+    --el-color-success: var(--vscode-testing-iconPassed, #3ba55c);
+    --el-color-warning: var(--vscode-testing-iconQueued, #dcb67a);
+    --el-color-danger: var(--vscode-testing-iconFailed, #f14c4c);
+    --el-color-error: var(--vscode-testing-iconFailed, #f14c4c);
+    --el-color-info: var(--vscode-editorInfo-foreground, var(--vscode-editor-foreground));
+    --el-font-color-disabled: var(--vscode-disabledForeground);
+    --el-box-shadow: var(--vscode-widget-shadow, rgba(0, 0, 0, 0.2));
+    --el-overlay-color-lighter: rgba(0, 0, 0, 0.3);
+    --el-overlay-color-light: rgba(0, 0, 0, 0.4);
+    --el-overlay-color: rgba(0, 0, 0, 0.55);
+    --el-overlay-color-dark: rgba(0, 0, 0, 0.65);
+    --el-hover-bg-color: color-mix(in srgb, var(--vscode-editor-background) 88%, rgba(255, 255, 255, 0.12));
+    --el-active-bg-color: color-mix(in srgb, var(--vscode-editor-background) 70%, rgba(0, 0, 0, 0.3));
+    --el-component-size-small: 28px;
+    --el-component-size: 32px;
+    --el-component-size-large: 36px;
+    color-scheme: light;
+}
+
+body.vscode-dark,
+body.vscode-high-contrast {
+    color-scheme: dark;
+    --el-mask-color: rgba(0, 0, 0, 0.6);
+    --el-mask-color-extra-light: rgba(0, 0, 0, 0.35);
+    --el-overlay-color: rgba(0, 0, 0, 0.7);
+    --el-overlay-color-light: rgba(0, 0, 0, 0.55);
+    --el-overlay-color-lighter: rgba(0, 0, 0, 0.45);
+    --el-hover-bg-color: color-mix(in srgb, var(--vscode-editor-background) 78%, rgba(255, 255, 255, 0.18));
+    --el-active-bg-color: color-mix(in srgb, var(--vscode-editor-background) 65%, rgba(255, 255, 255, 0.22));
+}
+
+body.vscode-high-contrast {
+    --el-border-color: var(--vscode-contrastBorder, var(--vscode-panel-border));
+    --el-border-color-light: var(--vscode-contrastBorder, var(--vscode-panel-border));
+    --el-border-color-lighter: var(--vscode-contrastBorder, var(--vscode-panel-border));
+    --el-fill-color: var(--vscode-editor-background);
+    --el-fill-color-light: var(--vscode-editor-background);
+    --el-fill-color-lighter: var(--vscode-editor-background);
+    --el-hover-bg-color: color-mix(in srgb, var(--vscode-editor-background) 82%, rgba(255, 255, 255, 0.2));
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+h1 {
+    color: var(--el-text-color-primary);
+    border-bottom: 1px solid var(--el-border-color);
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+.section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid var(--el-border-color-light);
+    border-radius: 4px;
+    background-color: var(--el-bg-color);
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: var(--el-text-color-primary);
+}
+
+.demo-row {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Element Plus component harmonization */
+.el-button {
+    border-radius: 2px;
+}
+
+.el-button.is-text,
+.el-button.is-link {
+    color: var(--vscode-textLink-foreground);
+}
+
+.el-input__inner,
+.el-textarea__inner {
+    background-color: var(--vscode-input-background);
+    border-color: var(--vscode-input-border);
+    color: var(--vscode-input-foreground);
+}
+
+.el-input__inner:focus,
+.el-textarea__inner:focus {
+    border-color: var(--vscode-focusBorder);
+    box-shadow: 0 0 0 1px var(--vscode-focusBorder) inset;
+}
+
+.el-switch__core {
+    background-color: var(--vscode-checkbox-background);
+    border-color: var(--vscode-checkbox-border);
+}
+
+.el-switch.is-checked .el-switch__core {
+    background-color: var(--vscode-button-background);
+    border-color: var(--vscode-button-background);
+}
+
+.el-select .el-input__inner {
+    background-color: var(--vscode-dropdown-background);
+    border-color: var(--vscode-dropdown-border);
+    color: var(--vscode-dropdown-foreground);
+}
+
+.el-select-dropdown,
+.el-dropdown-menu {
+    background-color: var(--vscode-dropdown-background);
+    border-color: var(--vscode-dropdown-border);
+    color: var(--vscode-dropdown-foreground);
+}
+
+.el-checkbox__inner,
+.el-radio__inner {
+    background-color: var(--vscode-checkbox-background);
+    border-color: var(--vscode-checkbox-border);
+}
+
+.el-checkbox__inner:after,
+.el-radio__inner:after {
+    background-color: var(--vscode-checkbox-selectBackground);
+}
+
+.el-checkbox__input.is-checked + .el-checkbox__label,
+.el-radio__input.is-checked + .el-radio__label {
+    color: var(--el-text-color-primary);
+}
+
+.el-checkbox__inner.is-disabled,
+.el-radio__inner.is-disabled {
+    background-color: var(--vscode-input-background);
+}
+
+.el-message,
+.el-notification,
+.el-message-box {
+    background-color: var(--el-bg-color-overlay);
+    border-color: var(--el-border-color-light);
+    color: var(--el-text-color-primary);
+}
+
+/* Scrollbar styling aligned with VS Code */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: var(--vscode-scrollbar-shadow);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--vscode-scrollbarSlider-background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--vscode-scrollbarSlider-hoverBackground);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: var(--vscode-scrollbarSlider-activeBackground);
+}
+
+::-webkit-scrollbar-track {
+    background-color: var(--vscode-scrollbar-shadow);
+}
+
+/* Fallback for systems honoring prefers-color-scheme outside VS Code */
+@media (prefers-color-scheme: dark) {
+    body:not(.vscode-light) {
+        color-scheme: dark;
+    }
+}

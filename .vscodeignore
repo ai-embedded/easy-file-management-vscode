@@ -1,0 +1,48 @@
+# 源代码文件（已编译到 dist/）
+src/**
+**/*.ts
+**/*.map
+*.ts
+
+# 测试文件
+out/
+out-codec/
+test/
+**/*.test.*
+**/*.spec.*
+
+# 构建和配置文件
+.vscode/**
+.vscode-test/**
+tsconfig*.json
+webpack.config.js
+.eslintrc*
+.gitignore
+.npmignore
+
+# 开发依赖和构建脚本
+node_modules/**
+scripts/**
+proto/**
+
+# 文档和版本控制
+.git
+.gitignore
+.github
+*.md
+!README.md
+!CHANGELOG.md
+
+# 各种配置文件
+.editorconfig
+.prettierrc*
+nodemon.json
+
+# 临时文件和缓存
+*.log
+*.vsix
+.DS_Store
+Thumbs.db
+
+# 编译产物中的 source map（如果不需要调试）
+# dist/**/*.map

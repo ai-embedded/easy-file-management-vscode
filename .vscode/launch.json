@@ -1,0 +1,70 @@
+// VSCode扩展调试配置 - 适配Windows+SSH远程开发
+// 支持实时代码修改和热重载
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "🚀 启动扩展 (开发模式)",
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceFolder}",
+				"--disable-extensions"
+			],
+			"outFiles": [
+				"${workspaceFolder}/dist/**/*.js"
+			],
+			"preLaunchTask": "npm: watch",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"env": {
+				"NODE_ENV": "development",
+				"VUE_ELEMENT_DEBUG": "true",
+				"VSCODE_DEBUG": "true"
+			},
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "openOnSessionStart",
+			"sourceMaps": true,
+			"smartStep": true,
+			"stopOnEntry": false,
+			"trace": "verbose"
+		},
+		{
+			"name": "🔧 启动扩展 (生产模式)",
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceFolder}"
+			],
+			"outFiles": [
+				"${workspaceFolder}/dist/**/*.js"
+			],
+			"preLaunchTask": "npm: compile",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"env": {
+				"NODE_ENV": "production"
+			},
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen"
+		},
+		{
+			"name": "🧪 运行扩展测试",
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceFolder}",
+				"--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
+			],
+			"outFiles": [
+				"${workspaceFolder}/out/test/**/*.js"
+			],
+			"preLaunchTask": "npm: pretest",
+			"skipFiles": [
+				"<node_internals>/**"
+			]
+		}
+	]
+}

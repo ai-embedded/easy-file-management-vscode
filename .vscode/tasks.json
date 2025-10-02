@@ -1,0 +1,97 @@
+// VSCode任务配置 - 支持SSH远程开发实时编译
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "npm: watch",
+			"type": "npm",
+			"script": "watch",
+			"problemMatcher": "$ts-webpack-watch",
+			"isBackground": true,
+			"presentation": {
+				"echo": true,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false,
+				"group": "watchers"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"runOptions": {
+				"runOn": "folderOpen"
+			}
+		},
+		{
+			"label": "npm: compile",
+			"type": "npm",
+			"script": "compile",
+			"problemMatcher": "$ts-webpack",
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false
+			}
+		},
+		{
+			"label": "npm: watch-tests",
+			"type": "npm",
+			"script": "watch-tests",
+			"problemMatcher": "$tsc-watch",
+			"isBackground": true,
+			"presentation": {
+				"reveal": "never",
+				"group": "watchers"
+			},
+			"group": "build"
+		},
+		{
+			"label": "开发环境启动",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"npm: watch"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"label": "重新启动开发环境",
+			"type": "shell",
+			"command": "echo",
+			"args": ["重新启动开发环境..."],
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"停止监听进程",
+				"npm: watch"
+			],
+			"group": "build"
+		},
+		{
+			"label": "停止监听进程",
+			"type": "shell",
+			"command": "/bin/bash",
+			"args": ["-c", "pkill -f 'npm run watch' || true"],
+			"options": {
+				"shell": {
+					"executable": "/bin/bash",
+					"args": ["-c"]
+				}
+			},
+			"presentation": {
+				"echo": false,
+				"reveal": "never"
+			},
+			"problemMatcher": []
+		}
+	]
+}

@@ -1,0 +1,33 @@
+{
+  // VSCode扩展推荐 - 提升SSH远程开发体验
+  "recommendations": [
+    // 必需扩展
+    "dbaeumer.vscode-eslint",
+    "amodio.tsl-problem-matcher", 
+    "ms-vscode.extension-test-runner",
+    
+    // SSH远程开发
+    "ms-vscode-remote.remote-ssh",
+    "ms-vscode-remote.remote-ssh-edit",
+    "ms-vscode.remote-explorer",
+    
+    // TypeScript/JavaScript开发
+    "ms-vscode.vscode-typescript-next",
+    "bradlc.vscode-tailwindcss",
+    
+    // 调试和测试
+    "ms-vscode.vscode-json",
+    "ms-vscode.test-adapter-converter",
+    
+    // 前端开发
+    "vue.volar",
+    "vue.vscode-typescript-vue-plugin",
+    
+    // 代码质量
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-eslint"
+  ],
+  "unwantedRecommendations": [
+    "ms-vscode.vscode-typescript"
+  ]
+}

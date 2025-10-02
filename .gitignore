@@ -1,0 +1,78 @@
+# VSCode Extension specific
+out
+dist
+node_modules
+.vscode-test/
+*.vsix
+
+# TypeScript 编译产物
+src/**/*.js
+src/**/*.js.map
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# dotenv environment variables file
+.env
+.env.test
+.env.local
+.env.staging
+.env.production
+
+# Temporary folders
+tmp/
+temp/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.idea/
+*.swp
+*.swo
+
+# Test files
+coverage/
+
+# Build files
+build/
+lib/
+
+# Package files
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity

@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "out-codec",
+    "noUnusedParameters": false,
+    "noImplicitAny": false
+  },
+  "include": [
+    "src/shared/utils/**/*",
+    "src/shared/validation/**/*",
+    "src/shared/monitoring/**/*",
+    "src/shared/proto/**/*",
+    "src/shared/codec/ProtobufCodec.ts",
+    "src/test/codec/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/webview/**/*",
+    "src/extension/**/*"
+  ]
+}

@@ -1,0 +1,290 @@
+{
+  "name": "easy-file-management",
+  "displayName": "Easy File Management VSCode",
+  "description": "A multi-protocol file transfer tool with Vue3 and Element Plus UI",
+  "version": "0.0.1",
+  "publisher": "local-publisher",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/example/easy-file-management.git"
+  },
+  "engines": {
+    "vscode": "^1.102.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:easy-file-management.openPanel"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "easy-file-management.openPanel",
+        "title": "Open Easy File Management VSCode Panel"
+      }
+    ],
+    "configuration": {
+      "title": "File Manager Security",
+      "properties": {
+        "fileManager.security.enableHostWhitelist": {
+          "type": "boolean",
+          "default": true,
+          "description": "启用主机白名单"
+        },
+        "fileManager.security.hostWhitelist": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "localhost",
+            "127.0.0.1",
+            "::1"
+          ],
+          "description": "允许访问的主机名"
+        },
+        "fileManager.security.enableProtocolCheck": {
+          "type": "boolean",
+          "default": true,
+          "description": "限制可用协议为 http/https"
+        },
+        "fileManager.security.allowedProtocols": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "http:",
+            "https:"
+          ],
+          "description": "允许的协议列表"
+        },
+        "fileManager.security.filterSensitiveHeaders": {
+          "type": "boolean",
+          "default": true,
+          "description": "过滤敏感请求头"
+        },
+        "fileManager.security.sensitiveHeaders": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "authorization",
+            "proxy-authorization",
+            "cookie",
+            "set-cookie",
+            "x-api-key",
+            "x-auth-token"
+          ],
+          "description": "敏感请求头名单"
+        },
+        "fileManager.security.enablePathValidation": {
+          "type": "boolean",
+          "default": true,
+          "description": "启用文件路径校验"
+        },
+        "fileManager.security.maxRedirects": {
+          "type": "number",
+          "default": 5,
+          "description": "HTTP 最大重定向次数"
+        },
+        "fileManager.security.requestTimeout": {
+          "type": "number",
+          "default": 30000,
+          "description": "HTTP 请求超时（毫秒）"
+        },
+        "fileManager.http.dataFormat": {
+          "type": "string",
+          "enum": [
+            "json",
+            "protobuf",
+            "auto"
+          ],
+          "default": "json",
+          "description": "HTTP数据传输格式：json（默认，兼容性最佳）、protobuf（高性能）、auto（自动协商）"
+        },
+        "fileManager.http.enableChunking": {
+          "type": "boolean",
+          "default": true,
+          "description": "启用分片传输（大文件自动启用以提升性能）"
+        },
+        "fileManager.http.chunkSize": {
+          "type": "number",
+          "enum": [
+            32,
+            64,
+            128,
+            256,
+            512
+          ],
+          "default": 128,
+          "description": "分片大小（KB）"
+        },
+        "fileManager.http.maxConcurrency": {
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            4,
+            6,
+            8
+          ],
+          "default": 4,
+          "description": "最大并发传输数"
+        },
+        "fileManager.http.enableResume": {
+          "type": "boolean",
+          "default": true,
+          "description": "启用断点续传（网络不稳定时推荐）"
+        },
+        "fileManager.http.autoNegotiation": {
+          "type": "boolean",
+          "default": false,
+          "description": "启用服务器能力自动协商（仅在auto模式下有效）"
+        },
+        "fileManager.http.fallbackToJson": {
+          "type": "boolean",
+          "default": true,
+          "description": "Protobuf失败时自动回退到JSON格式"
+        },
+        "fileManager.http.legacyMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "兼容模式（适用于旧版服务器）"
+        },
+        "fileManager.http.compression.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "启用数据压缩（默认关闭，CPU换带宽）"
+        },
+        "fileManager.http.compression.level": {
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "default": 6,
+          "description": "压缩级别：1（最快）- 9（最大压缩）"
+        },
+        "fileManager.http.compression.minSize": {
+          "type": "number",
+          "default": 1024,
+          "description": "启用压缩的最小文件大小（字节）"
+        },
+        "fileManager.http.http2.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "启用HTTP/2协议（需要服务器支持）"
+        },
+        "fileManager.http.http2.maxConcurrentStreams": {
+          "type": "number",
+          "default": 100,
+          "description": "HTTP/2最大并发流数"
+        }
+      }
+    },
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "easy-file-management.openPanel",
+          "group": "2_workspace",
+          "when": "true"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "easy-file-management.openPanel",
+          "group": "2_workspace",
+          "when": "true"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run generate:proto && webpack",
+    "watch": "npm run watch:proto & webpack --watch",
+    "watch:proto": "nodemon --watch proto --ext proto --exec \"npm run generate:proto\"",
+    "generate:proto": "node scripts/generate-proto.js",
+    "build": "npm run clean && npm run compile",
+    "build:prod": "npm run clean && npm run package",
+    "build:watch": "tsc -watch",
+    "clean:build": "rm -rf dist && rm -rf src/**/*.js src/**/*.js.map",
+    "rebuild": "npm run clean && npm run build",
+    "package": "webpack --mode production --devtool hidden-source-map --stats-error-details",
+    "package-extension": "npm run package && vsce package",
+    "package-force": "webpack --mode production --devtool hidden-source-map --bail=false",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "test": "vscode-test",
+    "test:unit": "npm run compile-tests && vscode-test --extensionDevelopmentPath=. --extensionTestsPath=./out/test",
+    "compile-tests:codec": "tsc -p tsconfig.codec.json",
+    "test:codec": "npm run compile-tests:codec && mocha out-codec/test/codec/**/*.test.js",
+    "test:benchmark": "npm run compile-tests && mocha out/test/performance/**/*.test.js --timeout 60000",
+    "test:integration": "npm run compile-tests && mocha out/test/integration/**/*.test.js --timeout 60000",
+    "test:all": "npm run test:codec && npm run test:benchmark && npm run test:integration",
+    "test:watch": "npm run watch-tests & npm run test",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "lint:watch": "nodemon --watch src --ext ts --exec \"npm run lint\"",
+    "format": "npm run lint:fix",
+    "format:check": "npm run lint",
+    "clean": "rimraf out dist *.vsix",
+    "clean:node_modules": "rimraf node_modules package-lock.json && npm install",
+    "dev": "npm run clean && npm run compile && npm run watch",
+    "check": "npm run compile && npm run lint && npm run test",
+    "check:quick": "npm run compile && npm run lint",
+    "install:vsce": "npm install -g @vscode/vsce",
+    "publish": "vsce publish",
+    "publish:patch": "npm version patch && npm run package-extension && vsce publish",
+    "publish:minor": "npm version minor && npm run package-extension && vsce publish",
+    "publish:major": "npm version major && npm run package-extension && vsce publish"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.102.0",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.6.0",
+    "@vue/compiler-sfc": "^3.5.18",
+    "@vue/runtime-dom": "^3.5.18",
+    "css-loader": "^7.1.2",
+    "eslint": "^9.25.1",
+    "nodemon": "^3.1.7",
+    "rimraf": "^6.0.1",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "vue-loader": "^17.4.2",
+    "webpack": "^5.99.7",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "axios": "^1.11.0",
+    "basic-ftp": "^5.0.5",
+    "debug": "^4.3.4",
+    "element-plus": "^2.10.4",
+    "form-data": "^4.0.4",
+    "ms": "^2.1.3",
+    "protobufjs": "^7.5.4",
+    "vue": "^3.5.18",
+    "vue-i18n": "^9.14.5",
+    "zod": "^3.23.8"
+  }
+}
