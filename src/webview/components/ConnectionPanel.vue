@@ -1045,12 +1045,95 @@ defineExpose({
 	flex: 1;
 	width: 100%;
 	min-width: 0;
+	padding-left: 12px;
+	padding-right: 12px;
+}
+
+.connection-form :deep(.el-input),
+.download-settings-form :deep(.el-input) {
+	width: 100%;
+	display: flex;
+	border-radius: var(--el-border-radius-base);
+	overflow: hidden;
+}
+
+.connection-form :deep(.el-input__wrapper),
+.download-settings-form :deep(.el-input__wrapper) {
+	flex: 1;
+	width: 100%;
+	min-width: 0;
+	padding: 0;
+	border-radius: 0;
+}
+
+.connection-form :deep(.el-input__inner),
+.download-settings-form :deep(.el-input__inner) {
+	padding: 0 12px;
+}
+
+.connection-form :deep(.el-input-group--prepend .el-input__inner),
+.download-settings-form :deep(.el-input-group--prepend .el-input__inner) {
+	padding-left: 0;
+}
+
+.connection-form :deep(.el-input-group--append .el-input__inner),
+.download-settings-form :deep(.el-input-group--append .el-input__inner) {
+	padding-right: 0;
+}
+
+.connection-form :deep(.el-input-group--prepend:not(.el-input-group--append) .el-input__inner),
+.download-settings-form :deep(.el-input-group--prepend:not(.el-input-group--append) .el-input__inner) {
+	padding-right: 0;
+}
+
+.connection-form :deep(.el-input-group--prepend.el-input-group--append .el-input__inner),
+.download-settings-form :deep(.el-input-group--prepend.el-input-group--append .el-input__inner) {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.connection-form :deep(.el-input-group__prepend),
+.connection-form :deep(.el-input-group__append),
+.download-settings-form :deep(.el-input-group__prepend),
+.download-settings-form :deep(.el-input-group__append) {
+	padding: 0;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	border-radius: 0;
+	margin: 0;
+	transition: background-color 0.2s ease;
+}
+
+.connection-form :deep(.el-input-group__prepend) {
+	padding-right: 12px;
+}
+
+.download-settings-form :deep(.el-input-group__append) {
+	padding-left: 12px;
+}
+
+.connection-form :deep(.el-input-group__append .el-button),
+.download-settings-form :deep(.el-input-group__append .el-button) {
+	height: 100%;
+	border-radius: 0;
+	margin: 0;
 }
 
 .connection-form :deep(.el-input-number__increase),
 .connection-form :deep(.el-input-number__decrease) {
 	width: 36px;
 	min-width: 36px;
+	top: 0;
+	bottom: 0;
+}
+
+.connection-form :deep(.el-input-number__increase) {
+	right: 0;
+}
+
+.connection-form :deep(.el-input-number__decrease) {
+	left: 0;
 }
 
 .connection-form :deep(.el-input-number:focus-within .el-input-number__increase),
