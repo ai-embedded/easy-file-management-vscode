@@ -1021,17 +1021,17 @@ defineExpose({
 <style scoped>
 .connection-panel {
   width: 100%;
-  max-width: 640px;
-  margin: 0 auto 20px auto;
-  padding: 0 24px 24px 24px;
+  max-width: 560px;
+  margin: 0 auto 16px auto;
+  padding: 8px 20px 20px 20px;
   box-sizing: border-box;
 }
 
 .connection-form {
   width: 100%;
-  max-width: 520px;
+  max-width: 460px;
   margin: 0;
-  padding-top: 8px;
+  padding-top: 4px;
 }
 
 .connection-form :deep(.el-input-number) {
@@ -1084,6 +1084,11 @@ defineExpose({
 .connection-form :deep(.el-input__inner),
 .download-settings-form :deep(.el-input__inner) {
 	padding: 0 12px;
+}
+
+.connection-form :deep(.el-form-item),
+.download-settings-form :deep(.el-form-item) {
+	margin-bottom: 14px;
 }
 
 .connection-form :deep(.el-input-group--prepend .el-input__inner),
@@ -1179,16 +1184,25 @@ defineExpose({
   width: 100%;
 }
 
+.settings-tabs :deep(.el-tabs__header) {
+  margin-bottom: 12px;
+}
+
+.settings-tabs :deep(.el-tabs__content) {
+  padding: 4px 0 0 0;
+}
+
 .download-settings-form {
-  max-width: 520px;
+  max-width: 460px;
   margin: 0;
-  padding: 16px 0;
+  padding: 12px 0;
 }
 
 .download-actions {
   display: flex;
   gap: 12px;
-  margin-top: 8px;
+  margin-top: 6px;
+  margin-bottom: 0;
 }
 
 .download-actions :deep(.el-form-item__content) {
@@ -1200,7 +1214,7 @@ defineExpose({
 .download-hint {
   font-size: 12px;
   color: var(--el-text-color-secondary);
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .card-header {
@@ -1217,7 +1231,7 @@ defineExpose({
   font-weight: 500;
   justify-content: flex-start;
   text-align: left;
-  padding-right: 16px;
+  padding-right: 12px;
 }
 
 .connection-form :deep(.el-form-item__content),
@@ -1236,7 +1250,8 @@ defineExpose({
 }
 
 .action-row {
-  margin-top: 12px;
+  margin-top: 14px;
+  margin-bottom: 0;
 }
 
 .action-row :deep(.el-form-item__content) {
