@@ -1,14 +1,5 @@
 <template>
-  <el-card class="connection-panel">
-    <template #header>
-      <div class="card-header">
-        <span>设置</span>
-        <el-tag :type="connectionStatusType" class="status-tag">
-          {{ connectionStatusText }}
-        </el-tag>
-      </div>
-    </template>
-
+  <div class="connection-panel">
     <el-tabs v-model="activeTab" class="settings-tabs">
       <el-tab-pane label="远程连接设置" name="connection">
         <el-form 
@@ -230,7 +221,7 @@
         </el-form>
       </el-tab-pane>
     </el-tabs>
-  </el-card>
+  </div>
 </template>
 
 <script setup lang="ts">
