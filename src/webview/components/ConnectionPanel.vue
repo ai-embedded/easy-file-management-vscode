@@ -1205,12 +1205,6 @@ defineExpose({
   margin-bottom: 0;
 }
 
-.download-actions :deep(.el-form-item__content) {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-}
-
 .download-hint {
   font-size: 12px;
   color: var(--el-text-color-secondary);
@@ -1237,6 +1231,12 @@ defineExpose({
 .connection-form :deep(.el-form-item__content),
 .download-settings-form :deep(.el-form-item__content) {
   justify-content: flex-start;
+}
+
+.download-settings-form :deep(.download-actions .el-form-item__content) {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
 }
 
 :deep(.el-input-group__prepend) {
