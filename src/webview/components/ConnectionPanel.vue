@@ -8,6 +8,7 @@
           :model="form" 
           :rules="rules" 
           label-width="100px"
+          label-position="left"
           @submit.prevent="handleConnect"
         >
       <el-form-item label="连接类型" prop="type">
@@ -183,7 +184,7 @@
       </el-tab-pane>
 
       <el-tab-pane label="下载设置" name="download">
-        <el-form class="download-settings-form" label-width="120px">
+        <el-form class="download-settings-form" label-width="120px" label-position="left">
           <el-form-item label="默认下载目录">
             <el-input
               v-model="downloadDirectoryInput"
@@ -1022,18 +1023,30 @@ defineExpose({
   width: 100%;
   max-width: 640px;
   margin: 0 auto 20px auto;
+  padding: 0 24px 24px 24px;
   box-sizing: border-box;
 }
 
 .connection-form {
   width: 100%;
   max-width: 520px;
-  margin: 0 auto;
+  margin: 0;
+  padding-top: 8px;
 }
 
 .connection-form :deep(.el-input-number) {
 	width: 100%;
 	display: flex;
+	align-items: stretch;
+	border: 1px solid var(--el-border-color);
+	border-radius: var(--el-border-radius-base);
+	background-color: var(--el-fill-color-blank);
+	overflow: hidden;
+}
+
+.connection-form :deep(.el-input-number:focus-within) {
+	border-color: var(--el-color-primary);
+	box-shadow: 0 0 0 1px var(--el-color-primary) inset;
 }
 
 .connection-form :deep(.el-input-number .el-input) {
@@ -1047,6 +1060,8 @@ defineExpose({
 	min-width: 0;
 	padding-left: 12px;
 	padding-right: 12px;
+	box-shadow: none;
+	border-radius: 0;
 }
 
 .connection-form :deep(.el-input),
@@ -1126,14 +1141,20 @@ defineExpose({
 	min-width: 36px;
 	top: 0;
 	bottom: 0;
-}
-
-.connection-form :deep(.el-input-number__increase) {
-	right: 0;
+	border: none;
+	border-left: 1px solid var(--el-border-color);
+	border-right: 1px solid var(--el-border-color);
+	background-color: var(--el-fill-color-lighter);
 }
 
 .connection-form :deep(.el-input-number__decrease) {
 	left: 0;
+	border-left: none;
+}
+
+.connection-form :deep(.el-input-number__increase) {
+	right: 0;
+	border-right: none;
 }
 
 .connection-form :deep(.el-input-number:focus-within .el-input-number__increase),
@@ -1160,7 +1181,7 @@ defineExpose({
 
 .download-settings-form {
   max-width: 520px;
-  margin: 0 auto;
+  margin: 0;
   padding: 16px 0;
 }
 
@@ -1194,6 +1215,14 @@ defineExpose({
 
 :deep(.el-form-item__label) {
   font-weight: 500;
+  justify-content: flex-start;
+  text-align: left;
+  padding-right: 16px;
+}
+
+.connection-form :deep(.el-form-item__content),
+.download-settings-form :deep(.el-form-item__content) {
+  justify-content: flex-start;
 }
 
 :deep(.el-input-group__prepend) {
