@@ -10,7 +10,7 @@ import type {
 	ConnectionConfig,
 	UploadConfig,
 	DownloadConfig
-} from '../../../shared/types';
+} from '@shared/types';
 import { ConnectionStatus } from '../../types/webview-types';
 
 export class TcpBridgeService extends GenericBridgeService {

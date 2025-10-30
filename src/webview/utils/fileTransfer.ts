@@ -1,10 +1,9 @@
-import type { Ref } from 'vue';
 import type { FileItem } from '../types';
-import { normalizeRemotePath } from '../../shared/utils/pathUtils';
+import { normalizeRemotePath } from '@shared/utils/pathUtils';
 import { joinPath } from './fileUtils';
 
 export interface ResolveFileOptions {
-  currentPath: Ref<string> | string;
+  currentPath: string;
 }
 
 export interface ResolvedFile {
@@ -12,8 +11,8 @@ export interface ResolvedFile {
   fileWithPath: FileItem;
 }
 
-const getCurrentPathValue = (value: Ref<string> | string): string => {
-	return typeof value === 'string' ? value : value.value;
+const getCurrentPathValue = (value: string): string => {
+	return value || '/';
 };
 
 export const resolveFile = (file: FileItem, options: ResolveFileOptions): ResolvedFile => {

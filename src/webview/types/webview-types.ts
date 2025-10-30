@@ -235,7 +235,7 @@ declare global {
 }
 
 // 导入统一的 TCP 命令定义
-import { TcpCommand } from '../../shared/constants/TcpCommands';
+import { TcpCommand } from '@shared/constants/TcpCommands';
 
 // TCP 响应状态枚举（分离响应状态和命令码）
 export enum TcpResponseStatus {

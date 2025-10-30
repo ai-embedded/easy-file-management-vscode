@@ -6,8 +6,8 @@ import type {
 	UploadConfig,
 	DownloadConfig,
 	BackendResponse
-} from '../../../shared/types';
-import { getTransportDefinition, type TransportDefinition, type TransportKind } from '../../../shared/transport';
+} from '@shared/types';
+import { getTransportDefinition, type TransportDefinition, type TransportKind } from '@shared/transport';
 import { uploadFileViaStream, type StreamUploadOverrides } from './StreamUploadHelper';
 
 interface GenericBridgeOptions {

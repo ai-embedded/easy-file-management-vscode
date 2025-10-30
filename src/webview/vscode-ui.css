@@ -1,0 +1,905 @@
+/* VSCode Webview UI Styles - Based on third_party/vscode-externsion-ui */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 13px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--vscode-editor-background);
+    color: var(--vscode-editor-foreground);
+}
+
+/* Tailwind 颜色系统 - 浅色模式 */
+:root {
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --blue-400: #60a5fa;
+    --blue-500: #3b82f6;
+    --blue-600: #2563eb;
+    --blue-700: #1d4ed8;
+    --green-400: #4ade80;
+    --green-500: #22c55e;
+    --green-600: #16a34a;
+    --green-700: #15803d;
+    --yellow-400: #facc15;
+    --yellow-500: #eab308;
+    --yellow-600: #ca8a04;
+    --yellow-700: #a16207;
+    --red-400: #f87171;
+    --red-500: #ef4444;
+    --red-600: #dc2626;
+    --red-700: #b91c1c;
+}
+
+/* 暗色模式颜色 */
+html.dark,
+body.vscode-dark,
+body.vscode-high-contrast {
+    --gray-50: #374151;
+    --gray-100: #4b5563;
+    --gray-200: #6b7280;
+    --gray-300: #9ca3af;
+    --gray-400: #d1d5db;
+    --gray-500: #e5e7eb;
+    --gray-600: #6b7280;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #ffffff;
+}
+
+h1, h2, h3, h4, h5, h6, p, ol, ul {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+}
+
+h1 {
+    color: var(--vscode-textLink-foreground);
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+h2 {
+    color: var(--vscode-textLink-foreground);
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+
+h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 24px;
+    margin-bottom: 12px;
+    color: var(--gray-900);
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.section {
+    margin-bottom: 32px;
+}
+
+.control-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.control-group label {
+    min-width: 120px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--vscode-editor-foreground);
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* 按钮样式 */
+.btn {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    position: relative;
+    background-color: transparent;
+    color: var(--vscode-editor-foreground);
+}
+
+.btn:focus {
+    box-shadow: 0 0 0 4px currentColor;
+}
+
+.btn-primary {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: 2px solid var(--vscode-button-border, transparent);
+}
+
+.btn-primary:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 3px var(--vscode-focusBorder);
+}
+
+.btn-secondary {
+    border: 2px solid var(--gray-300);
+    box-shadow: 0 0 0 2px transparent;
+    background-color: transparent;
+}
+
+html.dark .btn-secondary,
+body.vscode-dark .btn-secondary,
+body.vscode-high-contrast .btn-secondary {
+    border-color: #6b7280 !important;
+    background-color: #374151 !important;
+    color: var(--vscode-editor-foreground);
+}
+
+.btn-secondary:hover {
+    background-color: var(--vscode-button-secondaryHoverBackground);
+}
+
+.btn-success {
+    border: 2px solid var(--green-400);
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+html.dark .btn-success,
+body.vscode-dark .btn-success {
+    border-color: var(--green-700);
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+}
+
+.btn-success:hover {
+    background-color: rgba(34, 197, 94, 0.1);
+    border-color: var(--green-500);
+}
+
+html.dark .btn-success:hover,
+body.vscode-dark .btn-success:hover {
+    background-color: rgba(34, 197, 94, 0.2);
+    border-color: var(--green-600);
+}
+
+.btn-success:focus {
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
+}
+
+.btn-warning {
+    border: 2px solid var(--yellow-400);
+    box-shadow: 0 0 0 2px rgba(234, 179, 8, 0.2);
+}
+
+html.dark .btn-warning,
+body.vscode-dark .btn-warning {
+    border-color: var(--yellow-700);
+    box-shadow: 0 0 0 2px rgba(234, 179, 8, 0.3);
+}
+
+.btn-warning:hover {
+    background-color: rgba(234, 179, 8, 0.1);
+    border-color: var(--yellow-500);
+}
+
+html.dark .btn-warning:hover,
+body.vscode-dark .btn-warning:hover {
+    background-color: rgba(234, 179, 8, 0.2);
+    border-color: var(--yellow-600);
+}
+
+.btn-warning:focus {
+    box-shadow: 0 0 0 4px rgba(234, 179, 8, 0.3);
+}
+
+.btn-danger {
+    border: 2px solid var(--red-400);
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+html.dark .btn-danger,
+body.vscode-dark .btn-danger {
+    border-color: var(--red-700);
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
+}
+
+.btn-danger:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-color: var(--red-500);
+}
+
+html.dark .btn-danger:hover,
+body.vscode-dark .btn-danger:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+    border-color: var(--red-600);
+}
+
+.btn-danger:focus {
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.3);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-circle {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-small {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+/* 输入框样式 */
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="password"],
+select,
+textarea {
+    padding: 10px 12px;
+    font-size: 13px;
+    background-color: var(--gray-50);
+    color: var(--vscode-input-foreground);
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+    outline: none;
+    width: 100%;
+    min-width: 200px;
+    transition: all 0.2s ease;
+}
+
+html.dark input[type="text"],
+html.dark input[type="email"],
+html.dark input[type="number"],
+html.dark input[type="password"],
+html.dark select,
+html.dark textarea,
+body.vscode-dark input[type="text"],
+body.vscode-dark input[type="email"],
+body.vscode-dark input[type="number"],
+body.vscode-dark input[type="password"],
+body.vscode-dark select,
+body.vscode-dark textarea {
+    background-color: #374151 !important;
+    color: var(--vscode-input-foreground);
+    border-color: #6b7280 !important;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="number"]::placeholder,
+input[type="password"]::placeholder,
+textarea::placeholder {
+    color: var(--gray-400);
+}
+
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="number"]:hover,
+input[type="password"]:hover,
+select:hover {
+    border-color: var(--gray-400);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+select:focus {
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+html.dark input[type="text"]:focus,
+html.dark input[type="email"]:focus,
+html.dark input[type="number"]:focus,
+html.dark input[type="password"]:focus,
+html.dark select:focus,
+body.vscode-dark input[type="text"]:focus,
+body.vscode-dark input[type="email"]:focus,
+body.vscode-dark input[type="number"]:focus,
+body.vscode-dark input[type="password"]:focus,
+body.vscode-dark select:focus {
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+select option {
+    background-color: var(--gray-50);
+    color: var(--gray-900);
+}
+
+html.dark select option,
+body.vscode-dark select option {
+    background-color: #374151 !important;
+    color: #ffffff !important;
+}
+
+/* 复选框样式 */
+.checkbox-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    background-color: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+}
+
+html.dark .checkbox-list,
+body.vscode-dark .checkbox-list {
+    background-color: #374151 !important;
+    border-color: #6b7280 !important;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    cursor: pointer;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    cursor: pointer;
+    accent-color: var(--blue-600);
+    margin: 0 8px 0 0;
+    min-width: 16px;
+    background-color: var(--gray-50);
+    border: 1px solid var(--gray-300);
+}
+
+html.dark .checkbox-item input[type="checkbox"],
+body.vscode-dark .checkbox-item input[type="checkbox"] {
+    background-color: var(--gray-700);
+    border-color: var(--gray-600);
+}
+
+.checkbox-item label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-900);
+    cursor: pointer;
+    user-select: none;
+    margin: 0;
+    min-width: 0;
+}
+
+/* 单选按钮样式 */
+.radio-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+html.dark .radio-item,
+body.vscode-dark .radio-item {
+    background-color: var(--gray-700);
+    border-color: var(--gray-600);
+}
+
+.radio-item:hover {
+    background-color: var(--vscode-inputOption-hoverBackground);
+}
+
+.radio-item input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    cursor: pointer;
+    accent-color: var(--blue-600);
+    background-color: var(--gray-50);
+    border: 1px solid var(--gray-300);
+}
+
+html.dark .radio-item input[type="radio"],
+body.vscode-dark .radio-item input[type="radio"] {
+    background-color: var(--gray-700);
+    border-color: var(--gray-600);
+}
+
+.radio-item label {
+    margin: 0;
+    cursor: pointer;
+    user-select: none;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--vscode-editor-foreground);
+    min-width: 0;
+}
+
+/* 弹框/模态框样式 */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-overlay.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-container {
+    background-color: var(--vscode-editor-background);
+    border: 1px solid var(--vscode-panel-border);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: slideIn 0.3s ease;
+    position: relative;
+}
+
+.modal-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--vscode-panel-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--vscode-foreground);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--vscode-foreground);
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.modal-close:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+.modal-body {
+    padding: 20px;
+    color: var(--vscode-foreground);
+}
+
+.modal-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--vscode-panel-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* 表格样式 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--vscode-editor-background);
+    color: var(--vscode-editor-foreground);
+}
+
+th, td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--vscode-panel-border);
+}
+
+th {
+    background-color: var(--vscode-editor-background);
+    font-weight: 600;
+    color: var(--vscode-editor-foreground);
+}
+
+tr:hover {
+    background-color: var(--vscode-list-hoverBackground);
+}
+
+/* 禁用状态 */
+input:disabled,
+select:disabled,
+textarea:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+    .control-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .control-group label {
+        min-width: auto;
+        margin-bottom: 4px;
+    }
+    
+    .modal-container {
+        width: 95%;
+        max-height: 90vh;
+    }
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--vscode-scrollbar-shadow);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--vscode-scrollbarSlider-background);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--vscode-scrollbarSlider-hoverBackground);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: var(--vscode-scrollbarSlider-activeBackground);
+}
+
+/* 加载状态 */
+.loading {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--vscode-button-background);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 空状态 */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+    color: var(--vscode-descriptionForeground);
+}
+
+.empty-state-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.empty-state-text {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.empty-state-description {
+    font-size: 12px;
+    color: var(--vscode-descriptionForeground);
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--vscode-panel-border);
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--vscode-foreground);
+    transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+    background-color: var(--vscode-list-hoverBackground);
+}
+
+.tab-btn.active {
+    border-bottom-color: var(--vscode-textLink-foreground);
+    color: var(--vscode-textLink-foreground);
+}
+
+.tab-content {
+    padding: 0;
+}
+
+/* Form styles */
+.connection-form,
+.download-settings-form {
+    padding: 0;
+}
+
+.control-group {
+    margin-bottom: 20px;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--vscode-foreground);
+}
+
+.hint-text {
+    font-size: 12px;
+    color: var(--vscode-descriptionForeground);
+    margin-top: 4px;
+}
+
+.error-text {
+    display: block;
+    color: var(--vscode-errorForeground);
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.alert {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+}
+
+.alert-info {
+    background-color: var(--vscode-textBlockQuote-background);
+    border-left: 3px solid var(--vscode-textLink-foreground);
+    color: var(--vscode-foreground);
+}
+
+.alert strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* File Explorer Styles */
+.file-explorer {
+    padding: 0;
+}
+
+.explorer-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--vscode-panel-border);
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.breadcrumb-item {
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.breadcrumb-item:hover {
+    background-color: var(--vscode-list-hoverBackground);
+}
+
+.breadcrumb-separator {
+    color: var(--vscode-descriptionForeground);
+    padding: 0 4px;
+}
+
+.file-list-container {
+    position: relative;
+    overflow: auto;
+    max-height: calc(100vh - 200px);
+}
+
+.file-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.file-table th {
+    background-color: var(--vscode-editor-background);
+    font-weight: 600;
+    color: var(--vscode-editor-foreground);
+    border-bottom: 1px solid var(--vscode-panel-border);
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.file-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--vscode-panel-border);
+}
+
+.file-row:hover {
+    background-color: var(--vscode-list-hoverBackground);
+}
+
+.file-row.selected {
+    background-color: var(--vscode-list-activeSelectionBackground);
+    color: var(--vscode-list-activeSelectionForeground);
+}
+
+.file-name {
+    color: var(--vscode-editor-foreground);
+}
+
+.file-name.readonly {
+    color: var(--vscode-descriptionForeground);
+}
+
+/* Context Menu */
+.context-menu {
+    position: fixed;
+    background-color: var(--vscode-dropdown-background);
+    border: 1px solid var(--vscode-dropdown-border);
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10002;
+    min-width: 160px;
+    padding: 4px 0;
+}
+
+.context-menu-item {
+    padding: 8px 16px;
+    cursor: pointer;
+    color: var(--vscode-dropdown-foreground);
+    transition: background-color 0.2s ease;
+}
+
+.context-menu-item:hover:not(:disabled) {
+    background-color: var(--vscode-list-hoverBackground);
+}
+
+.context-menu-item:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.context-menu-divider {
+    height: 1px;
+    background-color: var(--vscode-panel-border);
+    margin: 4px 0;
+}
+
+/* App Container Layout */
+.app-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--vscode-editor-background);
+}
+
+.app-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 12px 16px;
+    gap: 8px;
+    border-bottom: 1px solid var(--vscode-panel-border);
+    flex-shrink: 0;
+}
+
+.toolbar-spacer {
+    flex: 1;
+}
+
+.file-actions-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+}

@@ -10,7 +10,7 @@ import {
 	FileOperationResult,
 	UploadConfig,
 	DownloadConfig
-} from '../../../shared/types';
+} from '@shared/types';
 
 interface PortInfo {
   path: string;

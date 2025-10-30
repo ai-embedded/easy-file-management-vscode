@@ -8,7 +8,7 @@ import type {
 	FtpServerCapabilities, 
 	ConfigValidationResult,
 	FtpConfigPreset 
-} from '../../shared/types/ftp';
+} from '@shared/types/ftp';
 
 export class FtpOptimizationService {
 	private static instance: FtpOptimizationService;

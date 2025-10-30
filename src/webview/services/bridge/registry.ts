@@ -1,4 +1,4 @@
-import type { TransportKind } from '../../../shared/transport';
+import type { TransportKind } from '@shared/transport';
 import { FtpBridgeService } from './FtpBridgeService';
 import { TcpBridgeService } from './TcpBridgeService';
 import { HttpBridgeService } from './HttpBridgeService';

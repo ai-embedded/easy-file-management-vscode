@@ -4,7 +4,7 @@
  */
 
 import { IConnectionService } from '../interfaces/IConnectionService';
-import { sanitizeForPostMessage } from '../../../shared/utils/Logger';
+import { sanitizeForPostMessage } from '@shared/utils/Logger';
 
 function describeBinary(value: unknown): string | null {
 	if (typeof ArrayBuffer !== 'undefined') {

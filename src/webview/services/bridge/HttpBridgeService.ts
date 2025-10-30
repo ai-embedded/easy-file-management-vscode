@@ -6,12 +6,12 @@
 import { GenericBridgeService } from './GenericBridgeService';
 import type { OperationControlHooks } from './BaseBridgeService';
 import type { StreamUploadOverrides } from './StreamUploadHelper';
-import { normalizeRemotePath } from '../../../shared/utils/pathUtils';
+import { normalizeRemotePath } from '@shared/utils/pathUtils';
 import type {
 	ConnectionConfig,
 	UploadConfig,
 	DownloadConfig
-} from '../../../shared/types';
+} from '@shared/types';
 
 export class HttpBridgeService extends GenericBridgeService {
 	private static readonly DEFAULT_CHUNK_SIZE = 1024 * 1024; // 1MB

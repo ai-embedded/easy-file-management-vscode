@@ -18,7 +18,6 @@
   },
   "include": [
     "./**/*",
-    "./types/vue-shim.d.ts",
     "./types/index.ts",
     "./global.d.ts"
   ],

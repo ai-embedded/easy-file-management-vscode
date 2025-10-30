@@ -4,7 +4,7 @@
  * 根据串口协议实现可行性分析报告第5.2.2节实现
  */
 
-import { UniversalCodec } from '../../../shared/codec/UniversalCodec';
+import { UniversalCodec } from '@shared/codec/UniversalCodec';
 import {
 	SerialCommand,
 	SerialDataFormat,

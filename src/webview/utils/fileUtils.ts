@@ -1,5 +1,5 @@
 import { FileItem } from '../types';
-import { joinPath as sharedJoinPath } from '../../shared/utils/pathUtils';
+import { joinPath as sharedJoinPath } from '@shared/utils/pathUtils';
 
 /**
  * 文件相关的工具函数

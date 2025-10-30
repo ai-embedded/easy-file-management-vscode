@@ -11,9 +11,9 @@ import {
 	getTransportDefinition,
 	isTransportSupported,
 	type TransportKind
-} from '../../shared/transport';
+} from '@shared/transport';
 
-export { getTransportDefinitions } from '../../shared/transport';
+export { getTransportDefinitions } from '@shared/transport';
 
 export type ConnectionType = TransportKind;
 

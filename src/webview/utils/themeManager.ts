@@ -1,4 +1,4 @@
-import { Logger } from '../../shared/utils/Logger';
+import { Logger } from '@shared/utils/Logger';
 
 type ThemeKind = 'light' | 'dark' | 'highContrast';
 type ThemeAppearance = 'light' | 'dark';

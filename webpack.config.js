@@ -4,7 +4,6 @@
 
 const path = require('path');
 const webpack = require('webpack');
-const { VueLoaderPlugin } = require('vue-loader');
 
 //@ts-check
 /** @typedef {import('webpack').Configuration} WebpackConfig **/
@@ -73,24 +72,20 @@ const webviewConfig = {
     clean: true,
   },
   resolve: {
-    extensions: ['.ts', '.js', '.vue', '.json', '.proto'],
+    extensions: ['.ts', '.js', '.json', '.proto'],
     alias: {
       '@': path.resolve(__dirname, 'src/webview'),
       '@shared': path.resolve(__dirname, 'src/shared'),
       '@proto': path.resolve(__dirname, 'proto')
-    }
+    },
+    mainFiles: ['index']
   },
   module: {
     rules: [
       {
-        test: /\.vue$/,
-        use: 'vue-loader'
-      },
-      {
         test: /\.ts$/,
         loader: 'ts-loader',
         options: {
-          appendTsSuffixTo: [/\.vue$/],
           transpileOnly: true,
           configFile: path.resolve(__dirname, 'src/webview/tsconfig.json')
         },
@@ -112,7 +107,6 @@ const webviewConfig = {
     ]
   },
   plugins: [
-    new VueLoaderPlugin(),
     // 为webview环境定义process.env，避免运行时错误
     new webpack.DefinePlugin({
       'process.env': JSON.stringify({}),

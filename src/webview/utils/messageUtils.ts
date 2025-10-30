@@ -1,5 +1,5 @@
 import { VSCodeMessage } from '../types';
-import { sanitizeForPostMessage } from '../../shared/utils/Logger';
+import { sanitizeForPostMessage } from '@shared/utils/Logger';
 
 function createLogSummary(value: any, maxLength = 200): string {
 	try {
@@ -179,12 +179,14 @@ export function log(level: 'info' | 'warn' | 'error', message: string, data?: an
 	consoleMethod(`[${level.toUpperCase()}] ${message}`, data);
 }
 
+import { UIMessage, UINotification, UIMessageBox } from './uiUtils';
+
 /**
  * 显示信息提示
  * @param message 提示消息
  */
 export function showInfo(message: string): void {
-	postMessage('showInfo', { message });
+    UIMessage.info(message);
 }
 
 /**
@@ -192,7 +194,7 @@ export function showInfo(message: string): void {
  * @param message 警告消息
  */
 export function showWarning(message: string): void {
-	postMessage('showWarning', { message });
+    UIMessage.warning(message);
 }
 
 /**
@@ -200,7 +202,15 @@ export function showWarning(message: string): void {
  * @param message 错误消息
  */
 export function showError(message: string): void {
-	postMessage('showError', { message });
+    UIMessage.error(message);
+}
+
+/**
+ * 显示成功提示
+ * @param message 成功消息
+ */
+export function showSuccess(message: string): void {
+    UIMessage.success(message);
 }
 
 /**

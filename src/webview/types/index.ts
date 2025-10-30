@@ -11,14 +11,14 @@ export type {
 	UploadConfig,
 	DownloadConfig,
 	ProgressInfo as FileProgress // 使用别名保持兼容
-} from '../../shared/types';
+} from '@shared/types';
 
 // 从共享类型导出枚举 - 枚举需要单独导出
-export { NotificationType } from '../../shared/types/messages';
-export { ConnectionStatus } from '../../shared/types/transport';
+export { NotificationType } from '@shared/types/messages';
+export { ConnectionStatus } from '@shared/types/transport';
 
 // 导出错误类型
-export { ServiceError, ErrorCode, ErrorFactory } from '../../shared/errors/ServiceError';
+export { ServiceError, ErrorCode, ErrorFactory } from '@shared/errors/ServiceError';
 
 // 文件操作类型枚举（webview特有）
 export enum FileOperationType {

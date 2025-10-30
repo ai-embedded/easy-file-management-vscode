@@ -1,4 +1,4 @@
-import type { FileOperationResult, ProgressInfo } from '../../../shared/types';
+import type { FileOperationResult, ProgressInfo } from '@shared/types';
 import type { BackendResponse, OperationControlHooks } from './BaseBridgeService';
 
 const CANCELLED_MESSAGE = '操作已取消';
