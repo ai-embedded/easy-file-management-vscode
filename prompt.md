@@ -1,0 +1,34 @@
+
+##
+进入 hard Ultrathink‌ 思考模式，调用 sequentialthinking 和 context7 等所有 mcp 工具
+
+服务器地址 和 默认下载目录输入框和内部的容器还是左右有留白，读取相关所有代码，完成修改，看截图 [04.png 774x487] [05.png 770x370] 需要完成和 超时时间 端口一样的修改，把这问题修复掉
+
+
+
+##
+
+进入 hard Ultrathink 思考模式，调用 sequentialthinking 和 context7 等所有 mcp 工具	
+
+当前源代码目录下 @src/webview/ 是使用的 Vue3 写的，现在我不想要 vue3 来实现 UI了，我想通过 @third_party/vscode-externsion-ui/ 下的 UI 主题和样式，来替换 Vue3 和 样式的代码，但是要保留所有已经有的功能，先做替换，然后删除相关代码。
+
+
+##
+
+##
+
+进入 hard Ultrathink 思考模式，调用 sequentialthinking 和 context7 等所有 mcp 工具
+
+对比 @third_party/easy-file-management-vscode 下UI 的功能，修复当前插件下新UI 下缺少的功能，功能一定要对齐，UI样式使用当前 @src下的样式，
+
+补齐功能，要求当前项目插件可以达到正常使用的状态
+
+
+
+##
+深度思考，调用 sequentialthinking 和 context7 和其他所有 mcp 工具 解决以下问题：
+
+我运行 python server_script/tcp_server.py --port 8899 --path tcp_test_root 服务端日志 tcp_server.log 显示有文件夹，但是vscode插件里面没有显示文件夹内容，显示空白，帮我解决这个问题，日志 @test/01.log，截图看 @test/01.png
+
+读取所有代码，修复这个问题，同时保证其他功能正常。
+

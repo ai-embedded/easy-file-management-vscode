@@ -1,0 +1,2 @@
+pyftpdlib>=1.5.7
+websockets>=11.0

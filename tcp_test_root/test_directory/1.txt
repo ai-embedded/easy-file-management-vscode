@@ -1,0 +1,160 @@
+console.ts:137 [Extension Host] [CMakeTools] 2025-09-07T14:34:06.440Z [debug] [main] 未启动 CMake 驱动程序: 未选择任何工具包
+console.ts:137 [Extension Host] Congratulations, your extension "vue-element-ui-extension" is now active!
+webviewElement.ts:487 An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.
+mountTo @ webviewElement.ts:487
+P @ overlayWebview.ts:250
+claim @ overlayWebview.ts:136
+claim @ webviewEditorInput.ts:138
+hb @ webviewEditor.ts:172
+setInput @ webviewEditor.ts:163
+await in setInput
+S @ editorPanes.ts:464
+L @ editorPanes.ts:259
+openEditor @ editorPanes.ts:136
+(anonymous) @ editorGroupView.ts:1259
+Lb @ editorGroupView.ts:1283
+Kb @ editorGroupView.ts:1241
+openEditor @ editorGroupView.ts:1145
+openEditor @ editorService.ts:582
+openWebview @ webviewWorkbenchService.ts:293
+$createWebviewPanel @ mainThreadWebviewPanels.ts:167
+S @ rpcProtocol.ts:458
+Q @ rpcProtocol.ts:443
+M @ rpcProtocol.ts:373
+L @ rpcProtocol.ts:299
+(anonymous) @ rpcProtocol.ts:161
+C @ event.ts:1219
+fire @ event.ts:1250
+fire @ ipc.net.ts:652
+A @ ipc.net.ts:1022
+(anonymous) @ ipc.net.ts:879
+C @ event.ts:1219
+fire @ event.ts:1250
+acceptChunk @ ipc.net.ts:394
+(anonymous) @ ipc.net.ts:350
+C @ event.ts:1219
+fire @ event.ts:1250
+fire @ event.ts:1417
+(anonymous) @ managedSocket.ts:108
+C @ event.ts:1219
+fire @ event.ts:1250
+$onDidManagedSocketHaveData @ mainThreadManagedSockets.ts:77
+S @ rpcProtocol.ts:458
+Q @ rpcProtocol.ts:443
+M @ rpcProtocol.ts:373
+L @ rpcProtocol.ts:308
+(anonymous) @ rpcProtocol.ts:161
+C @ event.ts:1219
+fire @ event.ts:1250
+fire @ ipc.net.ts:652
+l.onmessage @ localProcessExtensionHost.ts:383
+console.ts:137 [Extension Host] [Hot Reload] Webview file watcher setup complete
+VM10:5 VSCode API initialized successfully
+main.js:2 开始启动 Vue 应用...
+main.js:2 开始初始化 Vue 应用...
+main.js:2 Element Plus setup completed
+main.js:2 Vue 应用配置完成
+main.js:2 VSCode API not available, running in standalone mode
+SO @ main.js:2
+(anonymous) @ main.js:2
+DO @ main.js:2
+(anonymous) @ main.js:2
+(anonymous) @ main.js:2
+a @ main.js:2
+n @ main.js:2
+t.__weh.t.__weh @ main.js:2
+b @ main.js:2
+oe @ main.js:2
+mount @ main.js:2
+l.mount @ main.js:2
+(anonymous) @ main.js:2
+await in (anonymous)
+(anonymous) @ main.js:2
+(anonymous) @ main.js:2
+(anonymous) @ main.js:2
+main.js:2 Mock postMessage: {command: 'log', data: {…}}
+main.js:2 [INFO] Application mounted undefined
+main.js:2 Vue 应用挂载成功
+console.ts:137 [Extension Host] [Webview] Vue 应用初始化完成 undefined
+main.js:2 Mock setState: {connectionForm: Proxy(Object), customHeaders: ''}
+main.js:2 Mock setState: {connectionForm: Proxy(Object), customHeaders: ''}
+main.js:2 Mock setState: {connectionForm: Proxy(Object), customHeaders: ''}
+main.js:2 Mock setState: {connectionForm: Proxy(Object), customHeaders: ''}
+main.js:2 VSCode API available, sending request: {requestId: 'req_1757255653466_thgc1y7he', url: 'http://127.0.0.1:8020/api/ping', method: 'GET'}
+console.ts:137 [Extension Host] [HTTP Proxy] GET http://127.0.0.1:8020/api/ping
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255653466_thgc1y7he', success: true, data: {…}}
+main.js:2 VSCode API available, sending request: {requestId: 'req_1757255653481_j4epc4u7t', url: 'http://127.0.0.1:8020/api/files?path=%2F', method: 'GET'}
+console.ts:137 [Extension Host] [HTTP Proxy] GET http://127.0.0.1:8020/api/files?path=%2F
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255653466_thgc1y7he', success: true, data: {…}}
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255653481_j4epc4u7t', success: true, data: {…}}
+main.js:2 Mock postMessage: {command: 'log', data: {…}}
+main.js:2 [INFO] Files loaded {path: '/', count: 39}
+main.js:2 Mock postMessage: {command: 'log', data: {…}}
+main.js:2 [INFO] Connected to server {type: 'http', host: '127.0.0.1', port: 8020, timeout: 30000, headers: {…}}
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255653481_j4epc4u7t', success: true, data: {…}}
+main.js:2 VSCode API available, sending request: {requestId: 'req_1757255657623_gp93hroxh', url: 'http://127.0.0.1:8020/api/files/upload', method: 'POST'}
+console.ts:137 [Extension Host] [HTTP Proxy] POST http://127.0.0.1:8020/api/files/upload
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255657623_gp93hroxh', success: true, data: {…}}
+main.js:2 VSCode API available, sending request: {requestId: 'req_1757255657638_b07p3u4uc', url: 'http://127.0.0.1:8020/api/files?path=%2F', method: 'GET'}
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255657623_gp93hroxh', success: true, data: {…}}
+console.ts:137 [Extension Host] [HTTP Proxy] GET http://127.0.0.1:8020/api/files?path=%2F
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255657638_b07p3u4uc', success: true, data: {…}}
+main.js:2 Mock postMessage: {command: 'log', data: {…}}
+main.js:2 [INFO] Files loaded {path: '/', count: 39}
+main.js:2 Mock postMessage: {command: 'log', data: {…}}
+main.js:2 [INFO] Folder upload completed {successCount: 1, failCount: 0, targetPath: 'dist'}
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255657638_b07p3u4uc', success: true, data: {…}}
+main.js:2 VSCode API available, sending request: {requestId: 'req_1757255660392_ay3ejtz3s', url: 'http://127.0.0.1:8020/api/files?path=dist', method: 'GET'}
+console.ts:137 [Extension Host] [HTTP Proxy] GET http://127.0.0.1:8020/api/files?path=dist
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255660392_ay3ejtz3s', success: true, data: {…}}
+main.js:2 Mock postMessage: {command: 'log', data: {…}}
+main.js:2 [INFO] Files loaded {path: 'dist', count: 3}
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255660392_ay3ejtz3s', success: true, data: {…}}
+main.js:2 VSCode API available, sending request: {requestId: 'req_1757255664364_qc1wjg5z5', url: 'http://127.0.0.1:8020/api/files?path=%2Fdist', method: 'GET'}
+console.ts:137 [Extension Host] [HTTP Proxy] GET http://127.0.0.1:8020/api/files?path=%2Fdist
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255664364_qc1wjg5z5', success: true, data: {…}}
+main.js:2 Mock postMessage: {command: 'log', data: {…}}
+main.js:2 [INFO] Files loaded {path: '/dist', count: 3}
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255664364_qc1wjg5z5', success: true, data: {…}}
+main.js:2 VSCode API available, sending request: {requestId: 'req_1757255665782_0z4aitbkm', url: 'http://127.0.0.1:8020/api/files?path=%2Fdist', method: 'GET'}
+console.ts:137 [Extension Host] [HTTP Proxy] GET http://127.0.0.1:8020/api/files?path=%2Fdist
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255665782_0z4aitbkm', success: true, data: {…}}
+main.js:2 Mock postMessage: {command: 'log', data: {…}}
+main.js:2 [INFO] Files loaded {path: '/dist', count: 3}
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255665782_0z4aitbkm', success: true, data: {…}}
+main.js:2 VSCode API available, sending request: {requestId: 'req_1757255666433_9vqkzmqlp', url: 'http://127.0.0.1:8020/api/files?path=dist', method: 'GET'}
+console.ts:137 [Extension Host] [HTTP Proxy] GET http://127.0.0.1:8020/api/files?path=dist
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255666433_9vqkzmqlp', success: true, data: {…}}
+main.js:2 Mock postMessage: {command: 'log', data: {…}}
+main.js:2 [INFO] Files loaded {path: 'dist', count: 3}
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255666433_9vqkzmqlp', success: true, data: {…}}
+main.js:2 VSCode API available, sending request: {requestId: 'req_1757255667754_9oaobgmmx', url: 'http://127.0.0.1:8020/api/files?path=%2F', method: 'GET'}
+console.ts:137 [Extension Host] [HTTP Proxy] GET http://127.0.0.1:8020/api/files?path=%2F
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255667754_9oaobgmmx', success: true, data: {…}}
+main.js:2 Mock postMessage: {command: 'log', data: {…}}
+main.js:2 [INFO] Files loaded {path: '/', count: 39}
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255667754_9oaobgmmx', success: true, data: {…}}
+main.js:2 VSCode API available, sending request: {requestId: 'req_1757255687361_vwe9f2gg3', url: 'http://127.0.0.1:8020/api/files?path=%2F', method: 'GET'}
+console.ts:137 [Extension Host] [HTTP Proxy] GET http://127.0.0.1:8020/api/files?path=%2F
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255687361_vwe9f2gg3', success: true, data: {…}}
+main.js:2 Mock postMessage: {command: 'log', data: {…}}
+main.js:2 [INFO] Files loaded {path: '/', count: 39}
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255687361_vwe9f2gg3', success: true, data: {…}}
+main.js:2 VSCode API available, sending request: {requestId: 'req_1757255693084_bu387sp4d', url: 'http://127.0.0.1:8020/api/files/upload', method: 'POST'}
+console.ts:137 [Extension Host] [HTTP Proxy] POST http://127.0.0.1:8020/api/files/upload
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255693084_bu387sp4d', success: true, data: {…}}
+main.js:2 VSCode API available, sending request: {requestId: 'req_1757255693108_kfwwc4wf9', url: 'http://127.0.0.1:8020/api/files?path=%2F', method: 'GET'}
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255693084_bu387sp4d', success: true, data: {…}}
+console.ts:137 [Extension Host] [HTTP Proxy] GET http://127.0.0.1:8020/api/files?path=%2F
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255693108_kfwwc4wf9', success: true, data: {…}}
+main.js:2 Mock postMessage: {command: 'log', data: {…}}
+main.js:2 [INFO] Files loaded {path: '/', count: 39}
+main.js:2 Mock postMessage: {command: 'log', data: {…}}
+main.js:2 [INFO] Folder upload completed {successCount: 1, failCount: 0, targetPath: 'test_directory'}
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255693108_kfwwc4wf9', success: true, data: {…}}
+main.js:2 VSCode API available, sending request: {requestId: 'req_1757255695665_4og9lxg55', url: 'http://127.0.0.1:8020/api/files?path=test_directory', method: 'GET'}
+console.ts:137 [Extension Host] [HTTP Proxy] GET http://127.0.0.1:8020/api/files?path=test_directory
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255695665_4og9lxg55', success: true, data: {…}}
+main.js:2 Mock postMessage: {command: 'log', data: {…}}
+main.js:2 [INFO] Files loaded {path: 'test_directory', count: 1}
+main.js:2 Received message: {command: 'httpResponse', requestId: 'req_1757255695665_4og9lxg55', success: true, data: {…}}

@@ -678,12 +678,16 @@ function setupWebviewMessageHandlers(panel: vscode.WebviewPanel, context: vscode
 						}
 						break;
 
-					case 'saveState':
-						// 处理状态保存请求
-						if (message.data?.state && panel) {
+				case 'saveState':
+					// 处理状态保存请求
+					if (message.data?.state) {
+						try {
 							// 保存状态到VSCode的全局状态
 							await context.globalState.update('fileManagerState', message.data.state);
-							logger.debug('Webview状态已保存到globalState', message.data.state);
+							logger.info('Webview状态已保存到globalState', { 
+								hasConnectionForm: !!message.data.state.connectionForm,
+								hasDownloadSettings: !!message.data.state.downloadSettings
+							});
 
 							// 同时保存到文件系统作为备份
 							try {
@@ -695,12 +699,20 @@ function setupWebviewMessageHandlers(panel: vscode.WebviewPanel, context: vscode
 
 								const configPath = path.join(configDir, 'config.json');
 								fs.writeFileSync(configPath, JSON.stringify(message.data.state, null, 2));
-								logger.debug('配置已保存到文件:', configPath);
+								logger.info('配置已保存到文件:', configPath);
 							} catch (error) {
 								logger.warn('保存配置到文件失败:', error);
 							}
+						} catch (error) {
+							logger.error('保存状态到globalState失败:', error);
 						}
-						break;
+					} else {
+						logger.warn('saveState消息缺少state数据', { 
+							hasData: !!message.data,
+							hasState: !!message.data?.state
+						});
+					}
+					break;
 
 					case 'requestState':
 						// 处理状态请求

@@ -1,0 +1,49 @@
+main.js:2 [App.vue] 加载文件列表: 路径="/"
+console.ts:137 [Extension Host] [MessageRouter] 处理命令: backend.ftp.listFiles [trace=trace_1758379331564_g06xcmf91]
+main.js:2 Received message: {command: 'backendResponse', requestId: 'ftp_1758379357421_llquz0yws', success: true, data: {…}}
+main.js:2 [App.vue] 接收到文件列表: 15 个文件
+main.js:2 [App.vue] 文件 1.png: lastModified 是Date对象=false, 值=2025-09-20T14:13:23.000Z
+main.js:2 [App.vue] 文件 vue-element-ui-extension-0.0.1.vsix: lastModified 是Date对象=false, 值=2025-09-20T14:40:18.000Z
+main.js:2 [App.vue] 文件 images: lastModified 是Date对象=false, 值=2025-09-10T00:38:53.000Z
+main.js:2 [App.vue] 文件 large_file.txt: lastModified 是Date对象=false, 值=2025-09-10T00:56:16.000Z
+main.js:2 [App.vue] 文件 1234: lastModified 是Date对象=false, 值=2025-09-10T00:39:36.000Z
+main.js:2 [App.vue] 文件 empty_folder: lastModified 是Date对象=false, 值=2025-09-10T00:38:53.000Z
+main.js:2 [App.vue] 文件 readme.txt: lastModified 是Date对象=false, 值=2025-09-20T14:38:39.000Z
+main.js:2 [App.vue] 文件 test.json: lastModified 是Date对象=false, 值=2025-09-20T14:38:39.000Z
+main.js:2 [App.vue] 文件 22: lastModified 是Date对象=false, 值=2025-09-10T00:56:47.000Z
+main.js:2 [App.vue] 文件 videos: lastModified 是Date对象=false, 值=2025-09-20T14:11:28.000Z
+main.js:2 [App.vue] 文件 2.png: lastModified 是Date对象=false, 值=2025-09-20T14:13:45.000Z
+main.js:2 [App.vue] 文件 documents: lastModified 是Date对象=false, 值=2025-09-10T00:38:53.000Z
+main.js:2 [App.vue] 文件 360freeap_whole_setup_5.3.0.5010.exe: lastModified 是Date对象=false, 值=2025-09-20T14:41:47.000Z
+main.js:2 [App.vue] 文件 11.md: lastModified 是Date对象=false, 值=2025-09-20T14:40:12.000Z
+main.js:2 [App.vue] 文件 readonly: lastModified 是Date对象=false, 值=2025-09-20T14:11:28.000Z
+main.js:2 [INFO] Files loaded {path: '/', count: 15}
+main.js:2 [FileExplorer] 双击目录: 当前路径="/", 目录名="1234", 新路径="/1234"
+main.js:2 [App.vue] 加载文件列表: 路径="/1234"
+console.ts:137 [Extension Host] [MessageRouter] 处理命令: backend.ftp.listFiles [trace=trace_1758379332635_uv9juilcg]
+main.js:2 Received message: {command: 'backendResponse', requestId: 'ftp_1758379358492_tgcqu2ed1', success: true, data: {…}}
+main.js:2 [App.vue] 接收到文件列表: 0 个文件
+main.js:2 [INFO] Files loaded {path: '/1234', count: 0}
+log.ts:440  INFO Extension host (Remote) is unresponsive.
+console.ts:137 [Extension Host] [MessageRouter] 处理命令: backend.ftp.uploadFile [trace=trace_1758379347744_whaf4q2do]
+log.ts:440  INFO Extension host (Remote) is responsive.
+console.ts:137 [Extension Host] [MessageRouter] 进度事件: backend.ftp.uploadFile (ftp_1758379364901_2fhmyfnr7) {total: 26375640, loaded: 0, percent: 0, filename: '360freeap_whole_setup_5.3.0.5010.exe'}
+main.js:2 Received message: {command: 'backendProgress', requestId: 'ftp_1758379364901_2fhmyfnr7', progress: {…}, traceId: 'trace_1758379347744_whaf4q2do'}
+main.js:2 [App.vue] 文件上传进度: 360freeap_whole_setup_5.3.0.5010.exe - 0% (0/26375640)
+main.js:2 [App.vue] 更新状态栏进度: 0%
+console.ts:137 [Extension Host] [MessageRouter] 进度事件: backend.ftp.uploadFile (ftp_1758379364901_2fhmyfnr7) {total: 26375640, loaded: 26375640, percent: 100, filename: '360freeap_whole_setup_5.3.0.5010.exe'}
+main.js:2 Received message: {command: 'backendProgress', requestId: 'ftp_1758379364901_2fhmyfnr7', progress: {…}, traceId: 'trace_1758379347744_whaf4q2do'}
+main.js:2 [App.vue] 文件上传进度: 360freeap_whole_setup_5.3.0.5010.exe - 100% (26375640/26375640)
+main.js:2 [App.vue] 更新状态栏进度: 100%
+main.js:2 Received message: {command: 'backendResponse', requestId: 'ftp_1758379364901_2fhmyfnr7', success: true, data: {…}}
+main.js:2 [App.vue] 加载文件列表: 路径="/1234"
+console.ts:137 [Extension Host] [MessageRouter] 处理命令: backend.ftp.listFiles [trace=trace_1758379349669_lo4nyl8sf]
+main.js:2 Received message: {command: 'backendResponse', requestId: 'ftp_1758379375530_01akuarta', success: true, data: {…}}
+main.js:2 [App.vue] 接收到文件列表: 0 个文件
+main.js:2 [INFO] Files loaded {path: '/1234', count: 0}
+main.js:2 [INFO] Folder upload completed {successCount: 1, failCount: 0, targetPath: '/1234'}
+main.js:2 [App.vue] 加载文件列表: 路径="/1234"
+console.ts:137 [Extension Host] [MessageRouter] 处理命令: backend.ftp.listFiles [trace=trace_1758379352060_77z5zroy6]
+main.js:2 Received message: {command: 'backendResponse', requestId: 'ftp_1758379377918_iz3dm6rvp', success: true, data: {…}}
+main.js:2 [App.vue] 接收到文件列表: 0 个文件
+main.js:2 [INFO] Files loaded {path: '/1234', count: 0}

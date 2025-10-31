@@ -45,7 +45,6 @@ export class ConnectionPanel {
 		flowControl: 'none'
 	};
 
-	private customHeaders = '';
 	private downloadDirectoryInput = '';
 	private defaultDownloadDirectory = '';
 	private activeTab: 'connection' | 'download' = 'connection';
@@ -252,12 +251,6 @@ export class ConnectionPanel {
                             </div>
                         ` : ''}
 
-                        ${this.form.type === 'http' ? `
-                            <div class="control-group">
-                                <label for="custom-headers">自定义头部</label>
-                                <textarea id="custom-headers" rows="3" placeholder="JSON格式的自定义请求头 (可选)" ${isConnected ? 'disabled' : ''}>${this.customHeaders}</textarea>
-                            </div>
-                        ` : ''}
 
                         <div class="control-group" style="margin-top: 24px;">
                             <button type="button" class="btn btn-success" id="btn-save-connection" ${this.saving ? 'disabled' : ''}>
@@ -316,7 +309,7 @@ export class ConnectionPanel {
 		});
 
 		// Form inputs
-		['connection-host', 'connection-port', 'connection-timeout', 'ftp-username', 'ftp-password', 'custom-headers'].forEach(id => {
+		['connection-host', 'connection-port', 'connection-timeout', 'ftp-username', 'ftp-password'].forEach(id => {
 			const input = this.container.querySelector(`#${id}`) as HTMLInputElement | HTMLTextAreaElement;
 			if (input) {
 				input.addEventListener('input', () => {
@@ -325,6 +318,8 @@ export class ConnectionPanel {
 				});
 			}
 		});
+
+		this.attachNumberInputWheelGuard(['connection-port', 'connection-timeout']);
 
 		// Serial port inputs
 		['baud-rate', 'data-bits', 'stop-bits', 'parity', 'flow-control'].forEach(name => {
@@ -380,7 +375,6 @@ export class ConnectionPanel {
         
 		if (newType !== 'http') {
 			this.form.headers = {};
-			this.customHeaders = '';
 		}
         
 		if (newType !== 'tcp') {
@@ -413,8 +407,6 @@ export class ConnectionPanel {
 			this.form.username = value;
 		} else if (id === 'ftp-password') {
 			this.form.password = value;
-		} else if (id === 'custom-headers') {
-			this.customHeaders = value;
 		}
 	}
 
@@ -436,6 +428,24 @@ export class ConnectionPanel {
 		if (errorEl) {
 			errorEl.remove();
 		}
+	}
+
+	private attachNumberInputWheelGuard(ids: string[]): void {
+		ids.forEach((id) => {
+			const input = this.container.querySelector(`#${id}`) as HTMLInputElement | null;
+			if (!input) {
+				return;
+			}
+
+			const handleWheel = (event: WheelEvent) => {
+				if (document.activeElement === input) {
+					input.blur();
+				}
+				event.preventDefault();
+			};
+
+			input.addEventListener('wheel', handleWheel, { passive: false });
+		});
 	}
 
 	private validate(): boolean {
@@ -502,13 +512,18 @@ export class ConnectionPanel {
 			postMessage('saveState', { state: stateData });
 			saveState(stateData);
             
-			UIMessage.success('配置已保存');
-			this.logger.info('Connection settings saved', { summary: summarizeConnectionConfig(config) });
+			// 延迟重置状态，给用户视觉反馈
+			setTimeout(() => {
+				this.saving = false;
+				this.render();
+				UIMessage.success('配置已保存');
+				this.logger.info('Connection settings saved', { summary: summarizeConnectionConfig(config) });
+			}, 300);
 		} catch (error) {
+			this.saving = false;
+			this.render();
 			UIMessage.error('保存设置失败');
 			this.logger.error('Save failed', error);
-		} finally {
-			this.saving = false;
 		}
 	}
 
@@ -529,7 +544,6 @@ export class ConnectionPanel {
 			parity: 'none',
 			flowControl: 'none'
 		};
-		this.customHeaders = '';
 		this.errors = {};
 		this.render();
 	}
@@ -657,24 +671,10 @@ export class ConnectionPanel {
 		}, 8000);
 	}
 
-	private previewCustomHeaders(): Record<string, string> | undefined {
-		if (!this.customHeaders.trim()) {
-			return {};
-		}
-
-		try {
-			const parsed = JSON.parse(this.customHeaders);
-			return typeof parsed === 'object' && parsed !== null ? parsed : {};
-		} catch {
-			return undefined;
-		}
-	}
-
 	private getConnectionSummary(): string {
 		try {
 			const config: ConnectionConfig = {
-				...this.form,
-				headers: this.form.type === 'http' ? this.previewCustomHeaders() : this.form.headers
+				...this.form
 			} as ConnectionConfig;
 			return summarizeConnectionConfig(config);
 		} catch {
@@ -719,10 +719,6 @@ export class ConnectionPanel {
 	private buildConnectionConfig(): ConnectionConfig {
 		const config = JSON.parse(JSON.stringify(this.form)) as ConnectionConfig;
         
-		if (config.type === 'http') {
-			config.headers = this.parseCustomHeaders();
-		}
-        
 		if (config.type === 'ftp' && (!config.username || !config.password)) {
 			throw new Error('FTP连接需要用户名和密码');
 		}
@@ -730,24 +726,9 @@ export class ConnectionPanel {
 		return config;
 	}
 
-	private parseCustomHeaders(): Record<string, string> {
-		if (!this.customHeaders.trim()) {
-			return {};
-		}
-        
-		try {
-			const parsed = JSON.parse(this.customHeaders);
-			return typeof parsed === 'object' && parsed !== null ? parsed : {};
-		} catch (error) {
-			UIMessage.warning('自定义头部格式无效，将被忽略');
-			return {};
-		}
-	}
-
 	private buildStatePayload(config: ConnectionConfig) {
 		return {
 			connectionForm: config,
-			customHeaders: this.customHeaders || '',
 			downloadSettings: {
 				defaultDownloadPath: this.downloadDirectoryInput.trim() || null
 			}
@@ -764,9 +745,6 @@ export class ConnectionPanel {
 			const state = getState();
 			if (state.connectionForm) {
 				this.form = { ...this.form, ...state.connectionForm };
-			}
-			if (state.customHeaders) {
-				this.customHeaders = state.customHeaders;
 			}
 			if (state.downloadSettings?.defaultDownloadPath) {
 				this.downloadDirectoryInput = state.downloadSettings.defaultDownloadPath;

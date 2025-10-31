@@ -1,0 +1,11 @@
+{
+  "server": "ProtobufTcpServer",
+  "version": "2.0.0",
+  "protocol": "Protobuf over TCP",
+  "features": [
+    "protobuf",
+    "frames",
+    "chunks",
+    "compression"
+  ]
+}

@@ -239,15 +239,56 @@ export class HttpClient {
 				}
 			}
 
-			// 测试连接
-			try {
-				const response = await this.axiosInstance.get('/api/ping');
-				this.isConnected = response.status === 200;
-			} catch (error) {
-				// 即使ping失败，也认为连接建立（服务器可能没有/api/ping端点）
-				this.logger.warn('Ping测试失败，但连接已建立');
-				this.isConnected = true;
+		// 测试连接
+		try {
+			const response = await this.axiosInstance.get('/api/ping');
+			this.isConnected = response.status === 200;
+			
+			if (!this.isConnected) {
+				this.logger.warn(`Ping返回非200状态码: ${response.status}`);
 			}
+		} catch (error) {
+			// 分析错误类型
+			let errorMessage = '未知错误';
+			let errorCode: string | undefined;
+			
+			if (error && typeof error === 'object') {
+				if ('code' in error) {
+					errorCode = String(error.code);
+				}
+				if ('message' in error) {
+					errorMessage = String(error.message);
+				} else if ('response' in error && error.response) {
+					const axiosError = error as any;
+					if (axiosError.response?.status) {
+						errorMessage = `HTTP ${axiosError.response.status}: ${axiosError.response.statusText || '请求失败'}`;
+					} else if (axiosError.request) {
+						errorMessage = '网络请求失败，服务器无响应';
+					}
+				} else if ('request' in error) {
+					errorMessage = '网络请求失败，无法连接到服务器';
+				}
+			} else if (error instanceof Error) {
+				errorMessage = error.message;
+			} else if (typeof error === 'string') {
+				errorMessage = error;
+			}
+			
+			// 如果是连接错误（ECONNREFUSED等），直接抛出
+			if (errorCode === 'ECONNREFUSED' || errorCode === 'ETIMEDOUT' || errorCode === 'ENOTFOUND') {
+				this.logger.error('HTTP连接失败:', { 
+					error: errorMessage, 
+					code: errorCode,
+					baseURL,
+					protocol: this.config.dataFormat 
+				});
+				throw new Error(`无法连接到服务器 ${baseURL}: ${errorMessage}`);
+			}
+			
+			// 其他错误，记录警告但继续（服务器可能没有/api/ping端点）
+			this.logger.warn('Ping测试失败，但连接已建立', { error: errorMessage, code: errorCode });
+			this.isConnected = true;
+		}
 
 			this.logger.info(`HTTP连接${this.isConnected ? '成功' : '失败'}`, {
 				protocol: this.config.dataFormat,
@@ -264,8 +305,55 @@ export class HttpClient {
 			}
 			this.axiosInstance = undefined;
 			this.isConnected = false;
-			this.logger.error('HTTP连接失败:', error);
-			throw new Error(`HTTP连接失败: ${error instanceof Error ? error.message : String(error)}`);
+			
+			// 提取详细的错误信息
+			let errorMessage = '未知错误';
+			let errorCode: string | undefined;
+			let errorDetails: any = {};
+			
+			if (error && typeof error === 'object') {
+				if ('code' in error) {
+					errorCode = String(error.code);
+					errorDetails.code = errorCode;
+				}
+				if ('message' in error) {
+					errorMessage = String(error.message);
+				} else if ('response' in error && error.response) {
+					const axiosError = error as any;
+					if (axiosError.response?.status) {
+						errorMessage = `HTTP ${axiosError.response.status}: ${axiosError.response.statusText || '请求失败'}`;
+						errorDetails.status = axiosError.response.status;
+						errorDetails.statusText = axiosError.response.statusText;
+					} else if (axiosError.request) {
+						errorMessage = '网络请求失败，服务器无响应';
+						errorDetails.requestFailed = true;
+					}
+				} else if ('request' in error) {
+					errorMessage = '网络请求失败，无法连接到服务器';
+					errorDetails.connectionFailed = true;
+				}
+				
+				// 提取更多Axios错误信息
+				if ('config' in error) {
+					const axiosError = error as any;
+					errorDetails.url = axiosError.config?.url;
+					errorDetails.method = axiosError.config?.method;
+				}
+			} else if (error instanceof Error) {
+				errorMessage = error.message;
+			} else if (typeof error === 'string') {
+				errorMessage = error;
+			}
+			
+			this.logger.error('HTTP连接失败:', { 
+				error: errorMessage,
+				code: errorCode,
+				baseURL,
+				protocol: this.config.dataFormat,
+				...errorDetails
+			});
+			
+			throw new Error(`HTTP连接失败: ${errorMessage}${errorCode ? ` (${errorCode})` : ''}`);
 		}
 	}
 
@@ -358,6 +446,15 @@ export class HttpClient {
 			// 处理响应数据
 			let files: any[] = [];
       
+			this.logger.debug('文件列表响应数据:', { 
+				hasData: !!response.data,
+				dataType: typeof response.data,
+				isArray: Array.isArray(response.data),
+				hasFiles: !!(response.data && response.data.files),
+				hasDataProp: !!(response.data && response.data.data),
+				responseKeys: response.data && typeof response.data === 'object' ? Object.keys(response.data) : []
+			});
+      
 			if (response.data) {
 				if (Array.isArray(response.data)) {
 					files = response.data;
@@ -367,6 +464,8 @@ export class HttpClient {
 					files = response.data.data;
 				}
 			}
+
+			this.logger.info(`解析到 ${files.length} 个文件`, { path: normalizedPath });
 
 			return files.map((item: any) => ({
 				name: item.name || 'unknown',

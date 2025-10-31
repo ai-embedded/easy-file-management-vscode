@@ -287,8 +287,15 @@ export class App {
 		document.getElementById('btn-delete')?.addEventListener('click', () => this.handleExplorerBatchDelete());
 
 		// Close dialogs on backdrop click
-		document.getElementById('connection-dialog')?.addEventListener('click', (e) => {
-			if (e.target === e.currentTarget) {
+		const connectionDialog = document.getElementById('connection-dialog');
+		connectionDialog?.addEventListener('click', (event) => {
+			const overlay = event.currentTarget as HTMLElement | null;
+			if (!overlay) {
+				return;
+			}
+			const container = overlay.querySelector('.modal-container');
+			const target = event.target as Node | null;
+			if (!container || !target || !container.contains(target)) {
 				this.closeConnectionDialog();
 			}
 		});
