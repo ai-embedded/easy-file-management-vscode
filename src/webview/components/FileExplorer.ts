@@ -35,6 +35,7 @@ export class FileExplorer {
 
 	private files: FileItem[] = [];
 	private currentPath = '/';
+	private directoryCache = new Map<string, FileItem[]>();
 	private connected = false;
 	private loading = false;
 	private showPermissions = false;
@@ -57,6 +58,7 @@ export class FileExplorer {
 	private createFolderDialogVisible = false;
 	private newFolderName = '';
 	private creating = false;
+	private searchQuery = '';
 
 	constructor(container: HTMLElement, logger: Logger) {
 		this.container = container;
@@ -66,82 +68,236 @@ export class FileExplorer {
 		this.updateToolbarState();
 	}
 
+	private buildDirectoryTreeMarkup(): string {
+		const rootEntries = this.getSortedDirectories('/');
+		if (rootEntries.length === 0) {
+			return '<div style="color: var(--vscode-descriptionForeground); font-size: 12px;">暂无目录</div>';
+		}
+		return rootEntries.map((entry) => this.renderDirectoryNode(entry, 0)).join('');
+	}
+
+	private renderDirectoryNode(entry: FileItem, depth: number): string {
+		const path = entry.path;
+		const label = entry.name || (path === '/' ? '/' : path.split('/').filter(Boolean).pop() || '/');
+		const children = this.getSortedDirectories(path);
+		const isActive = this.currentPath === path;
+		const isAncestor = this.currentPath.startsWith(path === '/' ? '/' : `${path}/`) && !isActive;
+		const shouldExpand = children.length > 0 && (isActive || isAncestor);
+		const indent = depth === 0 ? 0 : depth * 16;
+		const highlightStyle = isActive
+			? 'background: var(--vscode-list-activeSelectionBackground); color: var(--vscode-list-activeSelectionForeground);'
+			: '';
+
+		const childrenMarkup = shouldExpand
+			? children.map((child) => this.renderDirectoryNode(child, depth + 1)).join('')
+			: '';
+
+		return `
+            <div class="tree-node" data-path="${this.escapeHtml(path)}">
+                <div class="tree-node-label" data-path="${this.escapeHtml(path)}" style="padding: 6px 8px; margin-left: ${indent}px; border-radius: 6px; display: flex; align-items: center; gap: 8px; cursor: pointer; ${highlightStyle}">
+                    <span>📁</span>
+                    <span>${this.escapeHtml(label)}</span>
+                </div>
+                ${childrenMarkup ? `<div class="tree-children">${childrenMarkup}</div>` : ''}
+            </div>
+        `;
+	}
+
+	private getSortedDirectories(path: string): FileItem[] {
+		const items = this.directoryCache.get(path) ?? [];
+		return [...items].sort((a, b) => a.name.localeCompare(b.name));
+	}
+
+	private buildSelectionSummary(totalVisible: number): string {
+		const selectedCount = this.selectedFiles.size;
+		if (selectedCount === 0) {
+			return `${totalVisible} 项`;
+		}
+
+		const selectedItems = this.files.filter((file) => this.selectedFiles.has(file.path));
+		const totalBytes = selectedItems.reduce((sum, file) => {
+			if (file.type === 'directory') {
+				return sum;
+			}
+			return sum + (file.size ?? 0);
+		}, 0);
+
+		const sizeText = totalBytes > 0 ? ` (${formatFileSize(totalBytes)})` : '';
+		return `${selectedCount} 项已选${sizeText}`;
+	}
+
+	private getFileTypeDisplay(file: FileItem): string {
+		if (file.type === 'directory') {
+			return 'Folder';
+		}
+		const lowerName = file.name.toLowerCase();
+		if (lowerName.endsWith('.js')) {return 'JavaScript';}
+		if (lowerName.endsWith('.ts')) {return 'TypeScript';}
+		if (lowerName.endsWith('.json')) {return 'JSON';}
+		if (lowerName.endsWith('.html')) {return 'HTML';}
+		if (lowerName.endsWith('.css')) {return 'CSS';}
+		if (lowerName.endsWith('.svg')) {return 'SVG';}
+		if (lowerName.endsWith('.png')) {return 'PNG';}
+		if (lowerName.endsWith('.jpg') || lowerName.endsWith('.jpeg')) {return 'JPEG';}
+		if (lowerName.endsWith('.txt')) {return 'Text';}
+		const parts = file.name.split('.');
+		return parts.length > 1 ? parts.pop()!.toUpperCase() : 'File';
+	}
+
+	private ensurePathChainInCache(path: string): void {
+		if (!path) {
+			return;
+		}
+
+		if (!this.directoryCache.has('/')) {
+			this.directoryCache.set('/', []);
+		}
+
+		const segments = path.split('/').filter(Boolean);
+		let current = '/';
+
+		for (const segment of segments) {
+			const nextPath = current === '/' ? `/${segment}` : `${current}/${segment}`;
+			const siblings = this.directoryCache.get(current) ?? [];
+
+			if (!siblings.some((item) => item.path === nextPath)) {
+				siblings.push({
+					name: segment,
+					path: nextPath,
+					type: 'directory',
+					size: 0,
+					lastModified: new Date(),
+					permissions: '',
+					isReadonly: false
+				});
+				siblings.sort((a, b) => a.name.localeCompare(b.name));
+				this.directoryCache.set(current, siblings);
+			}
+
+			if (!this.directoryCache.has(nextPath)) {
+				this.directoryCache.set(nextPath, []);
+			}
+
+			current = nextPath;
+		}
+	}
+
+	private triggerToolbarAction(buttonId: string): void {
+		const target = document.getElementById(buttonId);
+		target?.click();
+	}
+
 	private render(): void {
 		const pathSegments = this.getPathSegments();
 		const displayFiles = this.getDisplayFiles();
+		const treeMarkup = this.buildDirectoryTreeMarkup();
+		const selectionSummary = this.buildSelectionSummary(displayFiles.length);
+		const permissionsHeader = this.showPermissions ? '<th style="width: 100px; padding: 8px;">权限</th>' : '';
+		const noDataColspan = this.showPermissions ? 7 : 6;
 
 		this.container.innerHTML = `
-            <div class="file-explorer" style="display: ${this.connected ? 'block' : 'none'};">
-                <div class="explorer-header" style="padding: 16px; border-bottom: 1px solid var(--vscode-panel-border);">
-                    <div class="breadcrumb-container">
-                        <div class="breadcrumb">
-                            <span class="breadcrumb-item" data-path="/" style="cursor: pointer; padding: 4px 8px; border-radius: 4px;">
-                                🏠
-                            </span>
-                            ${pathSegments.map((segment, index) => `
-                                <span class="breadcrumb-separator">/</span>
-                                <span class="breadcrumb-item" data-path="${this.getPathUpTo(index)}" style="cursor: pointer; padding: 4px 8px; border-radius: 4px;">
-                                    ${this.escapeHtml(segment)}
+            <div class="file-explorer" style="display: ${this.connected ? 'flex' : 'none'}; height: 100%; background: var(--vscode-editor-background);">
+                <aside class="file-explorer-sidebar" style="width: 240px; border-right: 1px solid var(--vscode-panel-border); padding: 16px 12px; overflow-y: auto;">
+                    <div style="font-weight: 600; margin-bottom: 12px;">目录</div>
+                    <div id="directory-tree">
+                        ${treeMarkup}
+                    </div>
+                </aside>
+                <section class="file-explorer-main" style="flex: 1; display: flex; flex-direction: column;">
+                    <div class="explorer-header" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px; border-bottom: 1px solid var(--vscode-panel-border);">
+                        <div class="breadcrumb-container">
+                            <div class="breadcrumb">
+                                <span class="breadcrumb-item" data-path="/" style="cursor: pointer; padding: 4px 8px; border-radius: 4px;">
+                                    /
                                 </span>
-                            `).join('')}
+                                ${pathSegments.map((segment, index) => `
+                                    <span class="breadcrumb-separator">/</span>
+                                    <span class="breadcrumb-item" data-path="${this.getPathUpTo(index)}" style="cursor: pointer; padding: 4px 8px; border-radius: 4px;">
+                                        ${this.escapeHtml(segment)}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="position: relative;">
+                                <input type="search" id="file-search-input" placeholder="Search files..." value="${this.escapeHtml(this.searchQuery)}" style="padding: 6px 32px; border-radius: 6px; background: color-mix(in srgb, var(--vscode-editor-background) 90%, transparent); border: 1px solid var(--vscode-panel-border); color: var(--vscode-editor-foreground);">
+                                <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--vscode-descriptionForeground); pointer-events: none;">🔍</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <button class="btn btn-circle btn-small" id="header-download" title="下载所选">
+                                    ⬇
+                                </button>
+                                <button class="btn btn-circle btn-small btn-danger" id="header-delete" title="删除所选">
+                                    🗑
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="file-list-container" style="position: relative;">
-                    ${this.loading ? '<div class="loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>' : ''}
-                    <table class="file-table" style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr>
-                                <th style="width: 48px; padding: 8px;">
-                                    <input type="checkbox" id="select-all" ${this.isAllSelected() ? 'checked' : ''} ${this.isIndeterminate() ? 'indeterminate' : ''}>
-                                </th>
-                                <th style="width: 60px; padding: 8px;"></th>
-                                <th style="text-align: left; padding: 8px;">名称</th>
-                                <th style="text-align: right; width: 100px; padding: 8px;">大小</th>
-                                <th style="width: 180px; padding: 8px;">修改时间</th>
-                                ${this.showPermissions ? '<th style="width: 100px; padding: 8px;">权限</th>' : ''}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${displayFiles.length === 0 ? `
+                    <div class="file-list-container" style="flex: 1; position: relative;">
+                        ${this.loading ? '<div class="loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>' : ''}
+                        <table class="file-table" style="width: 100%; border-collapse: collapse;">
+                            <thead>
                                 <tr>
-                                    <td colspan="${this.showPermissions ? 6 : 5}" style="text-align: center; padding: 40px; color: var(--vscode-descriptionForeground);">
-                                        暂无文件
-                                    </td>
+                                    <th style="width: 48px; padding: 8px;">
+                                        <input type="checkbox" id="select-all" ${this.isAllSelected() ? 'checked' : ''} ${this.isIndeterminate() ? 'indeterminate' : ''}>
+                                    </th>
+                                    <th style="width: 40px; padding: 8px;"></th>
+                                    <th style="text-align: left; padding: 8px;">名称</th>
+                                    <th style="text-align: right; width: 120px; padding: 8px;">大小</th>
+                                    <th style="width: 140px; padding: 8px;">类型</th>
+                                    <th style="width: 180px; padding: 8px;">修改时间</th>
+                                    ${permissionsHeader}
                                 </tr>
-                            ` : displayFiles.map(file => `
-                                <tr class="file-row" data-path="${this.escapeHtml(file.path)}" style="cursor: pointer;">
-                                    <td style="text-align: center; padding: 8px;" onclick="event.stopPropagation();">
-                                        <input type="checkbox" class="file-checkbox" data-path="${this.escapeHtml(file.path)}" ${this.isRowSelected(file) ? 'checked' : ''}>
-                                    </td>
-                                    <td style="text-align: center; padding: 8px;">
-                                        <span style="font-size: 20px;">${file.type === 'directory' ? '📁' : '📄'}</span>
-                                    </td>
-                                    <td style="padding: 8px;">
-                                        <span class="file-name" ${file.isReadonly ? 'style="color: var(--vscode-descriptionForeground);"' : ''}>
-                                            ${this.escapeHtml(file.name)}
-                                        </span>
-                                        ${file.isReadonly ? '<span style="margin-left: 8px; padding: 2px 6px; background: var(--vscode-badge-background); color: var(--vscode-badge-foreground); border-radius: 3px; font-size: 11px;">只读</span>' : ''}
-                                    </td>
-                                    <td style="text-align: right; padding: 8px; color: var(--vscode-descriptionForeground);">
-                                        ${file.type === 'file' ? formatFileSize(file.size) : '--'}
-                                    </td>
-                                    <td style="padding: 8px; color: var(--vscode-descriptionForeground);">
-                                        ${file.lastModified ? formatDate(file.lastModified) : '未知时间'}
-                                    </td>
-                                    ${this.showPermissions ? `
-                                        <td style="padding: 8px; color: var(--vscode-descriptionForeground);">
-                                            ${file.permissions || '-'}
+                            </thead>
+                            <tbody>
+                                ${displayFiles.length === 0 ? `
+                                    <tr>
+                                        <td colspan="${noDataColspan}" style="text-align: center; padding: 48px; color: var(--vscode-descriptionForeground);">
+                                            暂无文件
                                         </td>
-                                    ` : ''}
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
+                                    </tr>
+                                ` : displayFiles.map(file => `
+                                    <tr class="file-row ${this.isRowSelected(file) ? 'selected' : ''}" data-path="${this.escapeHtml(file.path)}" style="cursor: pointer;">
+                                        <td style="text-align: center; padding: 8px;" onclick="event.stopPropagation();">
+                                            <input type="checkbox" class="file-checkbox" data-path="${this.escapeHtml(file.path)}" ${this.isRowSelected(file) ? 'checked' : ''}>
+                                        </td>
+                                        <td style="text-align: center; padding: 8px;">
+                                            <span style="font-size: 18px;">${file.type === 'directory' ? '📁' : '📄'}</span>
+                                        </td>
+                                        <td style="padding: 8px;">
+                                            <span class="file-name" ${file.isReadonly ? 'style="color: var(--vscode-descriptionForeground);"' : ''}>
+                                                ${this.escapeHtml(file.name)}
+                                            </span>
+                                            ${file.isReadonly ? '<span style="margin-left: 8px; padding: 2px 6px; background: var(--vscode-badge-background); color: var(--vscode-badge-foreground); border-radius: 3px; font-size: 11px;">只读</span>' : ''}
+                                        </td>
+                                        <td style="text-align: right; padding: 8px;">
+                                            ${file.type === 'directory' ? '--' : formatFileSize(file.size ?? 0)}
+                                        </td>
+                                        <td style="padding: 8px; color: var(--vscode-descriptionForeground);">
+                                            ${this.getFileTypeDisplay(file)}
+                                        </td>
+                                        <td style="padding: 8px; color: var(--vscode-descriptionForeground);">
+                                            ${file.lastModified ? formatDate(file.lastModified) : '未知时间'}
+                                        </td>
+                                        ${this.showPermissions ? `
+                                            <td style="padding: 8px; color: var(--vscode-descriptionForeground);">
+                                                ${file.permissions || '-'}
+                                            </td>
+                                        ` : ''}
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
 
-                <!-- Context Menu -->
+                    <div style="padding: 8px 16px; border-top: 1px solid var(--vscode-panel-border); color: var(--vscode-descriptionForeground); font-size: 12px;">
+                        ${selectionSummary}
+                    </div>
+                </section>
+            </div>
+
+            <!-- Context Menu -->
                 <div id="context-menu" class="context-menu" style="display: none;">
                     <div class="context-menu-item" id="ctx-preview" style="padding: 8px 16px; cursor: pointer;">
                         预览
@@ -242,6 +398,16 @@ export class FileExplorer {
 	}
 
 	private setupEventListeners(): void {
+		// Directory tree navigation
+		this.container.querySelectorAll('.tree-node-label').forEach((node) => {
+			node.addEventListener('click', () => {
+				const path = (node as HTMLElement).dataset.path;
+				if (path) {
+					this.navigateToPath(path);
+				}
+			});
+		});
+
 		// Breadcrumb navigation
 		this.container.querySelectorAll('.breadcrumb-item').forEach(item => {
 			item.addEventListener('click', () => {
@@ -250,6 +416,15 @@ export class FileExplorer {
 					this.navigateToPath(path);
 				}
 			});
+		});
+
+		// Search input
+		const searchInput = this.container.querySelector('#file-search-input') as HTMLInputElement;
+		searchInput?.addEventListener('input', (e) => {
+			this.searchQuery = (e.target as HTMLInputElement).value;
+			this.render();
+			this.setupEventListeners();
+			this.updateToolbarState();
 		});
 
 		// File row click
@@ -313,6 +488,10 @@ export class FileExplorer {
 				uploadInput.value = '';
 			}
 		});
+
+		// Header quick actions
+		this.container.querySelector('#header-download')?.addEventListener('click', () => this.triggerToolbarAction('btn-download'));
+		this.container.querySelector('#header-delete')?.addEventListener('click', () => this.triggerToolbarAction('btn-delete'));
 	}
 
 	private setupContextMenu(): void {
@@ -513,11 +692,17 @@ export class FileExplorer {
 	}
 
 	private isAllSelected(): boolean {
-		return this.files.length > 0 && this.selectedFiles.size === this.files.length;
+		const visibleFiles = this.getDisplayFiles();
+		return visibleFiles.length > 0 && visibleFiles.every(file => this.selectedFiles.has(file.path));
 	}
 
 	private isIndeterminate(): boolean {
-		return this.selectedFiles.size > 0 && this.selectedFiles.size < this.files.length;
+		const visibleFiles = this.getDisplayFiles();
+		if (visibleFiles.length === 0) {
+			return false;
+		}
+		const selectedVisible = visibleFiles.filter(file => this.selectedFiles.has(file.path)).length;
+		return selectedVisible > 0 && selectedVisible < visibleFiles.length;
 	}
 
 	private isRowSelected(file: FileItem): boolean {
@@ -525,12 +710,14 @@ export class FileExplorer {
 	}
 
 	private toggleSelectAll(checked: boolean): void {
+		const visibleFiles = this.getDisplayFiles();
 		if (checked) {
-			this.files.forEach(file => this.selectedFiles.add(file.path));
+			visibleFiles.forEach(file => this.selectedFiles.add(file.path));
 		} else {
-			this.selectedFiles.clear();
+			visibleFiles.forEach(file => this.selectedFiles.delete(file.path));
 		}
 		this.render();
+		this.setupEventListeners();
 		this.updateToolbarState();
 	}
 
@@ -540,6 +727,8 @@ export class FileExplorer {
 		} else {
 			this.selectedFiles.delete(file.path);
 		}
+		this.render();
+		this.setupEventListeners();
 		this.updateToolbarState();
 	}
 
@@ -897,6 +1086,15 @@ export class FileExplorer {
 			canBatchDelete: hasSelectedFiles > 0 && !hasSelectedReadonly
 		};
 
+		const headerDownload = this.container.querySelector('#header-download') as HTMLButtonElement | null;
+		if (headerDownload) {
+			headerDownload.disabled = !state.canBatchDownload || this.loading;
+		}
+		const headerDelete = this.container.querySelector('#header-delete') as HTMLButtonElement | null;
+		if (headerDelete) {
+			headerDelete.disabled = !state.canBatchDelete || this.loading;
+		}
+
 		this.onToolbarStateChange?.(state);
 	}
 
@@ -919,8 +1117,14 @@ export class FileExplorer {
 	}
 
 	// Public methods
-	setFiles(files: FileItem[]): void {
+	setFiles(files: FileItem[], path?: string): void {
+		const targetPath = path ?? this.currentPath;
 		this.files = files;
+		if (targetPath) {
+			const directories = files.filter(file => file.type === 'directory');
+			this.directoryCache.set(targetPath, directories.sort((a, b) => a.name.localeCompare(b.name)));
+			this.ensurePathChainInCache(targetPath);
+		}
 		this.render();
 		this.setupEventListeners();
 		this.updateToolbarState();
@@ -930,8 +1134,12 @@ export class FileExplorer {
 		if (this.currentPath !== path) {
 			this.pathHistory.push(this.currentPath);
 			this.currentPath = path;
+			this.selectedFiles.clear();
+			this.searchQuery = '';
+			this.ensurePathChainInCache(path);
 			this.render();
 			this.setupEventListeners();
+			this.updateToolbarState();
 		}
 	}
 
@@ -946,7 +1154,7 @@ export class FileExplorer {
 		if (this.connected === visible) {
 			const explorer = this.container.querySelector('.file-explorer') as HTMLElement;
 			if (explorer) {
-				explorer.style.display = visible ? 'block' : 'none';
+				explorer.style.display = visible ? 'flex' : 'none';
 			}
 			return;
 		}

@@ -135,45 +135,56 @@ export class App {
 		this.container.innerHTML = `
             <div class="app-container">
                 <div class="app-toolbar">
-                    <div class="file-actions-toolbar" id="file-actions-toolbar" style="display: none;">
-                        <button class="btn btn-circle btn-small" id="btn-go-back" title="返回">
-                            ←
-                        </button>
-                        <button class="btn btn-circle btn-small" id="btn-refresh" title="刷新">
-                            ⟳
-                        </button>
-                        <button class="btn btn-circle btn-small" id="btn-create-folder" title="创建文件夹">
-                            📁+
-                        </button>
-                        <button class="btn btn-circle btn-small btn-primary" id="btn-upload" title="上传">
-                            ⬆
-                        </button>
-                        <button class="btn btn-circle btn-small" id="btn-preview" title="预览">
-                            👁
-                        </button>
-                        <button class="btn btn-circle btn-small" id="btn-download" title="下载">
-                            ⬇
-                        </button>
-                        <button class="btn btn-circle btn-small" id="btn-rename" title="重命名">
-                            ✏
-                        </button>
-                        <button class="btn btn-circle btn-small" id="btn-move" title="移动">
-                            ↗
-                        </button>
-                        <button class="btn btn-circle btn-small btn-danger" id="btn-delete" title="删除">
-                            🗑
-                        </button>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #777777;" id="connection-status-dot"></span>
+                        <div style="display: flex; flex-direction: column;">
+                            <span id="connection-status-text" style="font-weight: 600;">未连接</span>
+                            <span id="connection-summary-text" style="font-size: 12px; color: var(--vscode-descriptionForeground);"></span>
+                        </div>
                     </div>
                     <div class="toolbar-spacer"></div>
-                    <button class="btn btn-circle btn-primary" id="btn-settings" title="连接设置">
-                        ⚙️
-                    </button>
-                    <button class="btn btn-success" id="btn-connect" style="display: none;">
-                        连接
-                    </button>
-                    <button class="btn btn-danger" id="btn-disconnect" style="display: none;">
-                        断开连接
-                    </button>
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <div class="file-actions-toolbar" id="file-actions-toolbar" style="display: none; gap: 4px;">
+                            <button class="btn btn-circle btn-small" id="btn-go-back" title="返回">
+                                ←
+                            </button>
+                            <button class="btn btn-circle btn-small" id="btn-refresh" title="刷新">
+                                ⟳
+                            </button>
+                            <button class="btn btn-circle btn-small" id="btn-create-folder" title="创建文件夹">
+                                📁+
+                            </button>
+                            <button class="btn btn-circle btn-small btn-primary" id="btn-upload" title="上传">
+                                ⬆
+                            </button>
+                            <button class="btn btn-circle btn-small" id="btn-preview" title="预览">
+                                👁
+                            </button>
+                            <button class="btn btn-circle btn-small" id="btn-download" title="下载">
+                                ⬇
+                            </button>
+                            <button class="btn btn-circle btn-small" id="btn-rename" title="重命名">
+                                ✏
+                            </button>
+                            <button class="btn btn-circle btn-small" id="btn-move" title="移动">
+                                ↗
+                            </button>
+                            <button class="btn btn-circle btn-small btn-danger" id="btn-delete" title="删除">
+                                🗑
+                            </button>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button class="btn btn-circle btn-primary" id="btn-settings" title="连接设置">
+                                ⚙️
+                            </button>
+                            <button class="btn btn-success" id="btn-connect" style="display: none;">
+                                Connect
+                            </button>
+                            <button class="btn btn-danger" id="btn-disconnect" style="display: none;">
+                                Disconnect
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="main-content" id="main-content">
@@ -184,6 +195,7 @@ export class App {
                             <button class="btn btn-primary" id="btn-open-connection-dialog">连接设置</button>
                         </div>
                     </div>
+                    <div id="file-explorer-root"></div>
                 </div>
 
                 <div id="status-bar-container"></div>
@@ -219,7 +231,7 @@ export class App {
 
 		// Initialize components
 		const connectionPanelContainer = document.getElementById('connection-panel-container');
-		const fileExplorerContainer = document.getElementById('main-content');
+		const fileExplorerContainer = document.getElementById('file-explorer-root');
 		const statusBarContainer = document.getElementById('status-bar-container');
 		const filePreviewContainer = document.getElementById('file-preview-container');
 
@@ -377,7 +389,10 @@ export class App {
 		const btnConnect = document.getElementById('btn-connect');
 		const btnDisconnect = document.getElementById('btn-disconnect');
 		const disconnectedHint = document.getElementById('disconnected-hint');
-		const mainContent = document.getElementById('main-content');
+		const statusText = document.getElementById('connection-status-text');
+		const statusSummary = document.getElementById('connection-summary-text');
+		const statusDot = document.getElementById('connection-status-dot');
+		const explorerRoot = document.getElementById('file-explorer-root');
 
 		const isConnected = this.appState.connectionStatus === ConnectionStatus.CONNECTED;
 		const isConnecting = this.appState.connectionStatus === ConnectionStatus.CONNECTING;
@@ -394,18 +409,61 @@ export class App {
 			btnDisconnect.style.display = (isConnected && !isConnecting) ? 'inline-block' : 'none';
 		}
 
+		if (statusText) {
+			switch (this.appState.connectionStatus) {
+				case ConnectionStatus.CONNECTED:
+					statusText.textContent = 'Connected to Remote Server';
+					break;
+				case ConnectionStatus.CONNECTING:
+					statusText.textContent = 'Connecting…';
+					break;
+				case ConnectionStatus.ERROR:
+					statusText.textContent = 'Connection Error';
+					break;
+				default:
+					statusText.textContent = 'Not Connected';
+					break;
+			}
+		}
+
+		if (statusSummary) {
+			const summary = this.getServerInfo();
+			statusSummary.textContent = summary ? summary : '';
+		}
+
+		if (statusDot) {
+			let color = '#777777';
+			switch (this.appState.connectionStatus) {
+				case ConnectionStatus.CONNECTED:
+					color = '#22c55e';
+					break;
+				case ConnectionStatus.CONNECTING:
+					color = '#facc15';
+					break;
+				case ConnectionStatus.ERROR:
+					color = '#ef4444';
+					break;
+				default:
+					color = '#777777';
+					break;
+			}
+			statusDot.setAttribute('style', `width: 10px; height: 10px; border-radius: 50%; background: ${color};`);
+		}
+
 		if (disconnectedHint) {
 			disconnectedHint.style.display = isConnected ? 'none' : 'flex';
 		}
 
+		if (explorerRoot) {
+			explorerRoot.style.display = isConnected ? 'block' : 'none';
+		}
+
 		// Update file explorer visibility
-		if (this.fileExplorer && isConnected) {
-			this.fileExplorer.setVisible(true);
-			this.fileExplorer.setFiles(this.appState.fileList);
+		if (this.fileExplorer) {
+			this.fileExplorer.setVisible(isConnected);
+			this.fileExplorer.setFiles(this.appState.fileList, this.appState.currentPath);
 			this.fileExplorer.setCurrentPath(this.appState.currentPath);
 			this.fileExplorer.setLoading(this.appState.loading);
-		} else if (this.fileExplorer) {
-			this.fileExplorer.setVisible(false);
 		}
 
 		// Update status bar
