@@ -943,10 +943,18 @@ export class FileExplorer {
 	}
 
 	setVisible(visible: boolean): void {
-		const explorer = this.container.querySelector('.file-explorer') as HTMLElement;
-		if (explorer) {
-			explorer.style.display = visible ? 'block' : 'none';
+		if (this.connected === visible) {
+			const explorer = this.container.querySelector('.file-explorer') as HTMLElement;
+			if (explorer) {
+				explorer.style.display = visible ? 'block' : 'none';
+			}
+			return;
 		}
+
+		this.connected = visible;
+		this.render();
+		this.setupEventListeners();
+		this.updateToolbarState();
 	}
 
 	goBack(): void {
